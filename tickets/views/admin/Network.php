@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="divider"></div>
-            <div class="style-label">Number of Pending Tickets<br>with Network Concern</div>
+            <div class="style-label">Number of Tickets with Network Concern</div>
         </div>
     </div>
 

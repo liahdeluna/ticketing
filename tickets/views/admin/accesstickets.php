@@ -140,25 +140,6 @@
                                                     ?>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 pr-1">
-                                                <div class="form-group">
-                                                    <label><h4>Ticket Status:&nbsp</h4></label>
-                                                    <?php 
-                                                        include("../../connect/connect.php");
-
-                                                       $select_post = "SELECT * FROM tickets WHERE Ticket_Number = '$TicketNum'";
-                                                        $run_posts = $conn->query($select_post);
-
-                                                        if ($run_posts->num_rows > 0) {
-                                                            while($row = $run_posts->fetch_assoc()){
-                                                                $post_Prio = $row ['Ticket_Status'];
-                                                                echo '<label><H4 style = "color:Black;">'.$row ["Ticket_Status"].'</H4></label>';
-                                                            }
-                                                        }
-                                                       
-                                                    ?>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col">
                                             <div class="col-md-12 pr-4">
@@ -201,6 +182,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php echo '<a href ="mark.php?TicketNumber='.$TicketNum.'"  class="btn btn-info btn-fill pull-right">MARK AS DONE</a>' ?>
                                     </form>
                                 </div>
                             </div>
@@ -230,15 +212,55 @@
                                             }
                                             else
                                             {
-                                                        echo  "<h4 class='card-title' style='color:black'>No Resolution</h4>"; 
+                                                        echo  "<h4 class='card-title' style='color:black'>No Comment</h4>"; 
                                             }
                                 ?>
                                     </div>
                                 </div>
-                                
+                                <hr class="col-md-9" style="margin-left: 13%;">
+                                <div class="card-header" style="margin-left: 10%">
+                                    <h4 class="card-title" style="color:black;">Create Comment</h4>
+                                </div>
+                                <div class="card-body">
+                                    <?php echo '<form method="post" class="form" action="accesstickets.php?TicketNumber='.$TicketNum.'">'?>
+                                        <div class="row">
+                                            <div class="col-md-10 pl-3" style="margin-left: 10%">
+                                                <div class="form-group">
+                                                    <textarea rows="10" cols="80" class="form-control" placeholder="Sample Comment" name="Comment" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Submit Comment</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
 
+                        <?php
+                                include("../../connect/connect.php");
+
+                                $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
+                                $sql =  "SELECT Admin_Fname FROM admin WHERE Admin_ID = '$AdminID'";
+                                $run_posts = $conn->query($sql);
+                                $row = $run_posts->fetch_assoc();
+                                $name = $row["Admin_Fname"]; 
+
+                                if(isset($_POST['submit'])){
+                                 $TicketNum = $_GET['TicketNumber'];
+                                    $Comms =  mysqli_real_escape_string($conn,$_POST["Comment"]);
+                                    $sql1 = "INSERT INTO ticket_comments(CommentNumber, Comments, Cstamp, Commenter_Id, Commenter_Name, TicksNums) VALUES (NULL, '$Comms', current_timestamp(), '$AdminID', '$name', '$TicketNum')";
+                                        if($conn->query($sql1) === TRUE){
+                                                        echo "<script>alert('SUCCESSFULLY SUBMITED COMMENT')</script>";
+                                                        echo "<script>window.open('accesstickets.php?TicketNumber=".$TicketNum."','_self')</script>";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "<script>alert('ERROR')</script>";
+                                                    }
+
+                                                    $conn->close();
+                                }
+                        ?> 
                     </div>
                 </div>
             </div>

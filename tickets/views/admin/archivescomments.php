@@ -59,6 +59,26 @@
     <link href="../../assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../../assets/css/demo.css" rel="stylesheet" />
+
+    <style>
+  /* Styles for the footer */
+  footer {
+    position: fixed; /* or 'absolute' if you want it relative to the container */
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: black;
+    text-align: center;
+    padding: -10px 0;
+  }
+
+  /* Styles for the content area (optional) */
+  .content {
+    /* Add padding-bottom equal to footer height */
+    padding-bottom: 60px; /* Adjust this value based on your footer height */
+  }
+</style>
 </head>
 
 
@@ -66,25 +86,22 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="12kjibas1315table.php" style="color:red">Return</a>
+                    <a class="navbar-brand" href="index.php" style="color:red">Return</a>
                 </div>
             </nav>
             <!-- End Navbar -->
-			<!-- ----------------------------------- -->
-			<!-- Start of Content -->
-            <div class="content">
-                <div class="container-fluid bg-secondary text-white pr-4 px-4">
+            <div class="content"><!-- Start of Content -->
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card" style="margin-top: 0.5%;">
+                            <div class="card" style="margin-top: 1%;">
                                 <div class="card-header">
-                                    <h4 class="card-title">Ticket Number: <?php echo $TicketNum; ?></h4>
+                                    <h4 class="card-title">Ticket Number : <?php echo $TicketNum; ?></h4>
                                 </div>
-                                <div class="card-body">
-                                    <form>
+                                    <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-3 pr-3">
-                                                <div class="form-group" style="color: white;">
+                                            <div class="col-md-4 pr-3">
+                                                <div class="form-group">
                                                     <label><h4>Subject:&nbsp</h4></label>
                                                     <?php 
                                                         include("../../connect/connect.php");
@@ -140,27 +157,8 @@
                                                     ?>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 pr-1">
-                                                <div class="form-group">
-                                                    <label><h4>Ticket Status:&nbsp</h4></label>
-                                                    <?php 
-                                                        include("../../connect/connect.php");
-
-                                                       $select_post = "SELECT * FROM tickets WHERE Ticket_Number = '$TicketNum'";
-                                                        $run_posts = $conn->query($select_post);
-
-                                                        if ($run_posts->num_rows > 0) {
-                                                            while($row = $run_posts->fetch_assoc()){
-                                                                $post_Prio = $row ['Ticket_Status'];
-                                                                echo '<label><H4 style = "color:Black;">'.$row ["Ticket_Status"].'</H4></label>';
-                                                            }
-                                                        }
-                                                       
-                                                    ?>
-                                                </div>
-                                            </div>
                                         </div>
-                                        <div class="col">
+                                        <div class="row">
                                             <div class="col-md-12 pr-4">
                                                 <div class="form-group">
                                                     <label><h4>Remarks:</h4>
@@ -201,48 +199,44 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                    </div>
-                    <div class="row" style="margin-left: 10%;">
-                        <div class="col-md-9">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="col-md-12 pr-1">
-                                        <h4>Comments:</h4>
-                                
-                                <?php
-                                    include("../../connect/connect.php");
-                                    $sql = "SELECT * FROM tickets JOIN ticket_comments ON tickets.Ticket_Number = ticket_comments.TicksNums WHERE ticket_comments.TicksNums = '$TicketNum' ORDER BY ticket_comments.Cstamp ASC";
-                                    $run_posts = $conn->query($sql);
-                                              
-                                        if ($run_posts->num_rows > 0) {
-                                        while($row = $run_posts->fetch_assoc()){
-                                                $post_Comment = $row['Comments'];
-                                                $post_Commenter = $row['Commenter_Name'];
-                                                $post_CID = $row['Commenter_Id'];
-                                                echo  "<h4 class='col-md-10' style = 'margin-left:10%;'>".$post_Comment." &nbsp-&nbsp ".$post_Commenter." (".$post_CID.") </h4>";    
-                                                }
-                                            }
-                                            else
-                                            {
-                                                        echo  "<h4 class='card-title' style='color:black'>No Resolution</h4>"; 
-                                            }
-                                ?>
+                                        <div class="row">
+                                            <div class="col-md-12 pr-4">
+                                                <div class="form-group">
+                                                    <label><h4>Comments:</h4></label>
+                                                                <?php
+                                                                    include("../../connect/connect.php");
+                                                                    $sql = "SELECT * FROM tickets JOIN ticket_comments ON tickets.Ticket_Number = ticket_comments.TicksNums WHERE ticket_comments.TicksNums = '$TicketNum' ORDER BY ticket_comments.Cstamp ASC";
+                                                                    $run_posts = $conn->query($sql);
+                                                                              
+                                                                        if ($run_posts->num_rows > 0) {
+                                                                        while($row = $run_posts->fetch_assoc()){
+                                                                                $post_Comment = $row['Comments'];
+                                                                                $post_Commenter = $row['Commenter_Name'];
+                                                                                $post_CID = $row['Commenter_Id'];
+                                                                                echo  "
+                                                                                <div class='row'>
+                                                                                    <div class='col-md-12 pr-1'>
+                                                                                        <div class='form-group'>
+                                                                                            <h4 class='col-md-10' style = 'margin-left:2%;'>".$post_Commenter."(".$post_CID.") &nbsp-&nbsp ".$post_Comment."</h4>";    
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                echo "<div class='row'>";
+                                                                                    echo "<div class='col-md-12 pr-1'>";
+                                                                                        echo "<div class='form-group'>";
+                                                                                            echo  "<h4>No Comments</h4>";   
+                                                                            }
+                                                                ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                
                             </div>
                         </div>
-
                     </div>
                 </div>
-            </div>
-            <footer class="footer">
+                <footer class="footer" style="position: bottom;"">
                 <div class="container-fluid">
                     <nav>
                         <p class="copyright text-center">
@@ -255,6 +249,7 @@
                     </nav>
                 </div>
             </footer>
+            </div>
 </body>
 <!--   Core JS Files   -->
 <script src="../../assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>

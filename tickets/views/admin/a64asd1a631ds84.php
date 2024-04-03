@@ -1,23 +1,9 @@
+
 <?php
   session_start();
-  if(!$_SESSION['UserId']){
-  header("Location: ../../userlogin.php");
+  if(!$_SESSION['AdminId']){
+  header("Location: ..\..\adminlogin.php");
   }
-
-include("../../connect/connect.php");
-
-    $UserIDs = mysqli_real_escape_string($conn,$_SESSION['UserId']);
-    $select_post =  "SELECT User_type FROM user WHERE User_ID = '$UserIDs'";
-    $run_posts = $conn->query($select_post);
-
-    if ($run_posts->num_rows > 0) {
-        while($row = $run_posts->fetch_assoc()){
-            $post_Usertype = $row['User_type'];
-            if($post_Usertype == "Admin"){
-                header("location:../admin/index.php");   
-            }
-        }
-    }
 ?>
 
 
@@ -44,7 +30,7 @@ include("../../connect/connect.php");
     <link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../../assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>SPCF Ticketing System</title>
+    <title>SPCF Ticketing System - Dashboard</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
@@ -54,7 +40,6 @@ include("../../connect/connect.php");
     <link href="../../assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../../assets/css/demo.css" rel="stylesheet" />
-    <link href="slide.css" rel="stylesheet" />
 </head>
 
 
@@ -74,16 +59,30 @@ include("../../connect/connect.php");
                 </div>
                 <ul class="nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="index.php">
+                        <a class="nav-link" href="#">
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
                     <li>
-                        <!-- link: ticket.php -->
-                        <a class="nav-link" href="ticket.php">
+                         <!-- link: 12kjibas1315table.php -->
+                        <a class="nav-link" href="12kjibas1315table.php">
                             <i class="nc-icon nc-notes"></i>
-                            <p>Create Ticket</p>
+                            <p>Ticket List</p>
+                        </a>
+                    </li>
+                    <li>
+                         <!-- link: index.php -->
+                        <a class="nav-link" href="index.php">
+                            <i class="nc-icon nc-bag"></i>
+                            <p>Ticket Archives</p>
+                        </a>
+                    </li>
+                    <li>
+                         <!-- link: asd654198ZXoi.php -->
+                        <a class="nav-link" href="asd654198ZXoi.php">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Users</p>
                         </a>
                     </li>
                     <li>
@@ -100,19 +99,24 @@ include("../../connect/connect.php");
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class="container-fluid">
-                    <?php
-                        include("../../connect/connect.php");            
-                        $UserIDs = mysqli_real_escape_string($conn,$_SESSION['UserId']);
-                        $select_post =  "SELECT User_Fname FROM user WHERE User_ID = '$UserIDs'";
-                        $run_posts = $conn->query($select_post);
 
-                            if ($run_posts->num_rows > 0) {
-                                while($row = $run_posts->fetch_assoc()){
-                                    $post_UserName = $row['User_Fname'];
-                                    echo '<a class="navbar-brand" href=#'.$post_UserName.'>'.$post_UserName."</a></p>";
-                                }
-                            }   
-                     ?>
+                        <?php
+
+                            include("../../connect/connect.php");
+
+                            $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
+                            $sql =  "SELECT User_ID, user_Fname FROM admin WHERE User_ID = '$AdminID'";
+                            $result = mysqli_query($conn, $sql);
+
+                            if (mysqli_num_rows($result) > 0) {
+                            while($row = mysqli_fetch_assoc($result)) {
+                                    echo '<a class="navbar-brand" href="#'.$row["user_Fname"].'">'.$row["user_Fname"]. '</a>';
+                              }
+                              }else{
+                                        session_destroy();
+                                        header("location:../../adminlogin.php");
+                                    } 
+                        ?>
                     <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>
                         <span class="navbar-toggler-bar burger-lines"></span>
@@ -120,27 +124,9 @@ include("../../connect/connect.php");
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="navbar-nav ml-auto">
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span class="no-icon">Account</span>
-                                </a>
-                            </li>
-                           <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="no-icon">Dropdown</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                    <div class="divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
-                                </div>
-                            </li>   DROPDOWN AND ACCOUNT LINK -->
                             <li class="nav-item">
                                 <a class="nav-link" href="logout.php">
-                                    <span class="no-icon">Log out</span>
+                                    <span class="no-icon">Logout</span>
                                 </a>
                             </li>
                         </ul>
@@ -149,14 +135,19 @@ include("../../connect/connect.php");
             </nav>
             <!-- End Navbar -->
             <div class="content"><!-- Start of Content -->
-                <?php include("slide.php"); ?>
                 <div class="container-fluid">
+                    <div class="rowow w-rowow">
+                            <?php include("Software.php");?>
+                            <?php include("Hardware.php");?>
+                            <?php include("Network.php");?>
+                    </div>
                     <div class="row">
-                            <!--Put content here-->
+                        <?php include("tickettablefordashboard.php");?>
                     </div>
                 </div>
             </div>
             <footer class="footer">
+
                 <div class="container-fluid">
                     <nav>
                         <p class="copyright text-center">
@@ -164,7 +155,7 @@ include("../../connect/connect.php");
                             <script>
                                 document.write(new Date().getFullYear())
                             </script>
-                            <a href="#">SPCF</a>, made with love for a better web
+                            <a href="#">SPCF</a>, All rights reserved.
                         </p>
                     </nav>
                 </div>
@@ -189,14 +180,5 @@ include("../../connect/connect.php");
 <script src="../../assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
 <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
-
-        demo.showNotification();
-
-    });
-</script>
 
 </html>

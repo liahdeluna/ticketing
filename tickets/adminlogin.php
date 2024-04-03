@@ -35,13 +35,13 @@ session_start();
 					<img src="assets/img/spcflogo.png" alt="IMG">
 				</div>
 
-				<form class="login100-form validate-form" method = "post" action = "userlogin.php">
-					<span class="login100-form-title">
+				<form class="login100-form validate-form" method = "post" action = "adminlogin.php">
+					<span class="login100-form-title">	
 						ADMIN LOGIN
 					</span>
 
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name = "UserId" placeholder="Admin ID" required>
+						<input class="input100" type="text" name = "AdminId" placeholder="Admin ID" required>
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-id-card" aria-hidden="true"></i>
@@ -93,19 +93,22 @@ session_start();
 include("connect/connect.php");
 
 if(isset($_POST["submit"])){
-	$UserID = mysqli_real_escape_string($conn,$_POST["UserId"]);
+	$AdminID = mysqli_real_escape_string($conn,$_POST["AdminId"]);
 	$Password = mysqli_real_escape_string($conn,$_POST["password"]);
 	$Password = md5($Password);
-	$sel_user = "SELECT * FROM admin WHERE User_ID='$UserID' AND BINARY User_Pass='$Password'";
+	$sel_user = "SELECT * FROM admin WHERE User_ID='$AdminID' AND BINARY User_Pass='$Password'";
 	$run_user = mysqli_query($conn,$sel_user);
 	$check_user = mysqli_num_rows($run_user);
 	
-	if($check_user >= 0){
-		$_SESSION["UserId"] = $UserID;
-		echo "<script>window.open('views/admin/index.php','_SELF')</script>";
+	if($check_user>0){
+		$_SESSION["AdminId"] = $AdminID;
+		echo "<script>window.open('views/admin/a64asd1a631ds84.php','_SELF')</script>";
 	}
-	else if($UserID == ""){
+	elseif($AdminID == ""){
 		echo"<script>alert('Admin ID can't be blank!')</script>";
+	}
+	else{
+		echo"<script>alert('Incorrect!')</script>";
 	}
 }
 ?>

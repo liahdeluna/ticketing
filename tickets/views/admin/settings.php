@@ -1,23 +1,8 @@
 <?php
   session_start();
-  if(!$_SESSION['UserId']){
-  header("Location: ../../userlogin.php");
+  if(!$_SESSION['AdminId']){
+  header("Location: ..\..\login.php");
   }
-
-include("../../connect/connect.php");
-
-    $UserIDs = mysqli_real_escape_string($conn,$_SESSION['UserId']);
-    $select_post =  "SELECT User_type FROM user WHERE User_ID = '$UserIDs'";
-    $run_posts = $conn->query($select_post);
-
-    if ($run_posts->num_rows > 0) {
-        while($row = $run_posts->fetch_assoc()){
-            $post_Usertype = $row['User_type'];
-            if($post_Usertype == "User"){
-                header("location:../users/index.php");   
-            }
-        }
-    }
 ?>
 <!-- 
 =========================================================
@@ -42,7 +27,7 @@ include("../../connect/connect.php");
     <link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../../assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Settings</title>
+    <title>SPCF Ticketing System</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
@@ -70,26 +55,32 @@ include("../../connect/connect.php");
                     </a>
                 </div>
                 <ul class="nav">
-                    <li>
-                        <a class="nav-link" href="index.php">
+                   <li>
+                        <a class="nav-link" href="a64asd1a631ds84.php">
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="userprofiles.php">
-                            <i class="nc-icon nc-circle-09"></i>
-                            <p>User Profiles</p>
+                        <a class="nav-link" href="12kjibas1315table.php">
+                            <i class="nc-icon nc-notes"></i>
+                            <p>Ticket List</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="ticket.php">
-                            <i class="nc-icon nc-notes"></i>
-                            <p>Create Ticket</p>
+                        <a class="nav-link" href="index.php">
+                            <i class="nc-icon nc-bag"></i>
+                            <p>Ticket Archives</p>
                         </a>
                     </li>
-                    <li  class="nav-item active">
-                        <a class="nav-link" href="settings.php">
+                    <li>
+                        <a class="nav-link" href="asd654198ZXoi.php">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Users</p>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">
                             <i class="nc-icon nc-settings-gear-64"></i>
                             <p>Settings</p>
                         </a>
@@ -102,18 +93,22 @@ include("../../connect/connect.php");
             <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class="container-fluid">
                     <?php
-                        include("../../connect/connect.php");            
-                        $UserIDs = mysqli_real_escape_string($conn,$_SESSION['UserId']);
-                        $select_post =  "SELECT User_Fname FROM user WHERE User_ID = '$UserIDs'";
-                        $run_posts = $conn->query($select_post);
 
-                            if ($run_posts->num_rows > 0) {
-                                while($row = $run_posts->fetch_assoc()){
-                                    $post_UserName = $row['User_Fname'];
-                                    echo '<a class="navbar-brand" href=#'.$post_UserName.'>'.$post_UserName."</a></p>";
-                                }
-                            }   
-                     ?>
+                            include("../../connect/connect.php");
+
+                            $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
+                            $sql =  "SELECT Admin_ID,Admin_Fname FROM superadmin WHERE Admin_ID = '$AdminID'";
+                            $result = mysqli_query($conn, $sql);
+
+                            if (mysqli_num_rows($result) > 0) {
+                            while($row = mysqli_fetch_assoc($result)) {
+                                    echo '<a class="navbar-brand" href="#'.$row["Admin_Fname"].'">'.$row["Admin_Fname"]. '</a>';
+                              }
+                              }else{
+                                        session_destroy();
+                                        header("location:../../login.php");
+                                    } 
+                        ?>
                     <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>
                         <span class="navbar-toggler-bar burger-lines"></span>
@@ -126,7 +121,7 @@ include("../../connect/connect.php");
                                     <span class="no-icon">Account</span>
                                 </a>
                             </li>
-                           <li class="form-control dropdown">
+                           <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="no-icon">Dropdown</span>
                                 </a>
@@ -152,85 +147,79 @@ include("../../connect/connect.php");
             <div class="content"><!-- Start of Content -->
                 <div class="container-fluid">
                     <div class="row">
-                            <!--Start of Change Password-->
-                                <div id="Cpass" class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-title">Change Password</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <form method="post" class="form" action="settings.php">
-                                                <div class="row">
-                                                    <div class="col-md-10 px-2">
-                                                        <div class="form-group">
-                                                            <label>Old Password</label>
-                                                            <input type="Password" class="form-control" placeholder="Old Password" name="Oldpass" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-10 px-2">
-                                                        <div class="form-group">
-                                                            <label>New Password</label>
-                                                            <input type="Password" class="form-control" placeholder="New Password" name="pass1" required>
-                                                        </div>
-                                                    </div>
-                                                </div>                <div class="row">
-                                                    <div class="col-md-10 px-2">
-                                                        <div class="form-group">
-                                                            <label>Re-enter Password</label>
-                                                            <input type="Password" class="form-control" placeholder="Re-enter Password" name="pass2" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Change Password</button>
-                                            </form>
-                                        </div>
-                                    </div>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Change Password</h4>
                                 </div>
-                                <?php
-                                        include("../../connect/connect.php");
-                                        if(isset($_POST['submit'])){ 
-                                            $Old =  md5(mysqli_real_escape_string($conn,$_POST["Oldpass"]));
-                                            $New1 =  mysqli_real_escape_string($conn,$_POST["pass1"]);
-                                            $New2 =  mysqli_real_escape_string($conn,$_POST["pass2"]);
-                                            $Password = md5($New1);
-
-                                            $select_post = "SELECT * FROM user WHERE User_Id = '$UserIDs'";
-                                            $run_posts = $conn->query($select_post);
-                                            if ($run_posts->num_rows > 0) {
-                                                while($row = $run_posts->fetch_assoc()){
-                                                    $post_Pass = $row['User_Pass'];
-                                                    if ($post_Pass===$Old){
-                                                        If($New1===$New2){
-                                                            $sql = "UPDATE user SET User_Pass = '$Password' WHERE User_ID = '$UserIDs'";
-                                                            if($conn->query($sql) === TRUE){
-                                                                    echo"<script>alert('SUCCESFULLY CHANGED PASSWORD')</script>";
-                                                                    echo "<script>window.open('settings.php','_SELF')</script>";
-                                                             }
-                                                        }
-                                                        else
-                                                        {
-                                                            echo"<script>alert('Newly Entered Password Does not Match!')</script>";
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        echo"<script>alert('Incorrect Old Password')</script>";
-                                                    }
-                                                    }
-                                            }
-                                            else{
-                                                               
-                                            } 
-                                        }   
-                                ?>
-                            <!--End of Change Password-->
-                            <!--Start of Update Info-->
-                            <!--End of Update Info-->
+                                <div class="card-body">
+                                    <form method="post" class="form" action="settings.php">
+                                        <div class="row">
+                                            <div class="col-md-10 px-2">
+                                                <div class="form-group">
+                                                    <label>Old Password</label>
+                                                    <input type="Password" class="form-control" placeholder="Old Password" name="Oldpass" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10 px-2">
+                                                <div class="form-group">
+                                                    <label>New Password</label>
+                                                    <input type="Password" class="form-control" placeholder="New Password" name="pass1" required>
+                                                </div>
+                                            </div>
+                                        </div>                <div class="row">
+                                            <div class="col-md-10 px-2">
+                                                <div class="form-group">
+                                                    <label>Re-enter Password</label>
+                                                    <input type="Password" class="form-control" placeholder="Re-enter Password" name="pass2" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Change Password</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
+                        <?php
+                                include("../../connect/connect.php");
+                                if(isset($_POST['submit'])){
+                                    $Old =  md5(mysqli_real_escape_string($conn,$_POST["Oldpass"]));
+                                    $New1 =  mysqli_real_escape_string($conn,$_POST["pass1"]);
+                                    $New2 =  mysqli_real_escape_string($conn,$_POST["pass2"]);
+                                    $Password = md5($New1);
+
+                                    $select_post = "SELECT * FROM superadmin WHERE Admin_ID = '$AdminID'";
+                                    $run_posts = $conn->query($select_post);
+                                    if ($run_posts->num_rows > 0) {
+                                        while($row = $run_posts->fetch_assoc()){
+                                            $post_Pass = $row['Admin_pass'];
+                                            if ($post_Pass===$Old){
+                                                If($New1===$New2){
+                                                    $sql = "UPDATE admin SET Admin_pass = '$Password' WHERE Admin_ID = '$AdminID'";
+                                                    if($conn->query($sql) === TRUE){
+                                                            echo"<script>alert('SUCCESFULLY CHANGED PASSWORD')</script>";
+                                                            echo "<script>window.open('settings.php','_SELF')</script>";
+                                                     }
+                                                }
+                                                else
+                                                {
+                                                    echo"<script>alert('Newly Entered Password Does not Match!')</script>";
+                                                }
+                                            }
+                                            else
+                                            {
+                                                echo"<script>alert('Incorrect Old Password')</script>";
+                                            }
+                                        }
+                                    }
+                                    
+                                }   
+                        ?> 
                     </div>
                 </div>
+            </div>
             <footer class="footer">
                 <div class="container-fluid">
                     <nav>
@@ -244,7 +233,6 @@ include("../../connect/connect.php");
                     </nav>
                 </div>
             </footer>
-            </div>
         </div>
     </div>
    
@@ -259,5 +247,6 @@ include("../../connect/connect.php");
 <script src="../../assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
 <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
+
 
 </html>
