@@ -1,0 +1,30 @@
+.button1{
+	text-decoration: none;
+	font-size:48px;
+	color:darkcyan;
+	text-align: center;
+	margin-left: 50%;
+}
+
+.button2{
+	text-decoration: none;
+	font-size:48px;
+	color:red;
+	text-align: center;
+	margin-left: 100%;
+}
+
+.buttonx{
+	text-decoration: none;
+	font-size:48px;
+	color:darkcyan;
+	text-align: center;
+	margin-left: 10%;
+}
+.move{
+	margin-left: 25%;
+}
+
+.movebutton{
+	margin-left: 43%;
+}
