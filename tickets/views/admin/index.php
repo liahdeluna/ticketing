@@ -105,7 +105,7 @@ include("../../connect/connect.php");
                     <?php
                         include("../../connect/connect.php");            
                         $UserIDs = mysqli_real_escape_string($conn,$_SESSION['UserId']);
-                        $select_post =  "SELECT User_Fname FROM user WHERE User_ID = '$UserIDs'";
+                        $select_post =  "SELECT User_Fname FROM admin WHERE User_ID = '$UserIDs'";
                         $run_posts = $conn->query($select_post);
 
                             if ($run_posts->num_rows > 0) {

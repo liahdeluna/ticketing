@@ -78,13 +78,6 @@
                         </a>
                     </li>
                     <li>
-                         <!-- link: ticketcreationforuser.php -->
-                        <a class="nav-link" href="ticketcreationforuser.php">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>Create Ticket - User</p>
-                        </a>
-                    </li>
-                    <li>
                          <!-- link: asd654198ZXoi.php -->
                         <a class="nav-link" href="asd654198ZXoi.php">
                             <i class="nc-icon nc-circle-09"></i>
@@ -111,7 +104,7 @@
                             include("../../connect/connect.php");
 
                             $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
-                            $sql =  "SELECT Admin_ID,Admin_Fname FROM admin WHERE Admin_ID = '$AdminID'";
+                            $sql =  "SELECT Admin_ID,Admin_Fname FROM superadmin WHERE Admin_ID = '$AdminID'";
                             $result = mysqli_query($conn, $sql);
 
                             if (mysqli_num_rows($result) > 0) {
@@ -130,24 +123,6 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="navbar-nav ml-auto">
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span class="no-icon">Account</span>
-                                </a>
-                            </li>
-                           <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="no-icon">Dropdown</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                    <div class="divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
-                                </div>
-                            </li>   DROPDOWN AND ACCOUNT LINK -->
                             <li class="nav-item">
                                 <a class="nav-link" href="logout.php">
                                     <span class="no-icon">Logout</span>
@@ -161,10 +136,9 @@
             <div class="content"><!-- Start of Content -->
                 <div class="container-fluid">
                     <div class="rowow w-rowow">
-                        <?php include("Software.php");?>
-                        <?php include("Hardware.php");?>
-                        <?php include("Network.php");?>
-                        <?php include("Others.php");?>
+                            <?php include("Software.php");?>
+                            <?php include("Hardware.php");?>
+                            <?php include("Network.php");?>
                     </div>
                     <div class="row">
                         <?php include("tickettablefordashboard.php");?>

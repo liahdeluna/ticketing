@@ -121,7 +121,7 @@ if(isset($_POST["submit"])){
 	
 	if($check_user>0){
 		$_SESSION["UserId"] = $UserID;
-		echo "<script>window.open('views/admin/index.php','_SELF')</script>";
+		echo "<script>window.open('views/users/index.php','_SELF')</script>";
 	}
 	else if($UserID = ""){
 		echo"<script>alert('User ID can't be blank!')</script>";

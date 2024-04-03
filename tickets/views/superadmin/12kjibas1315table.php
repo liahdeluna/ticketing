@@ -76,12 +76,6 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="ticketcreationforuser.php">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>Create Ticket - User</p>
-                        </a>
-                    </li>
-                    <li>
                         <a class="nav-link" href="asd654198ZXoi.php">
                             <i class="nc-icon nc-circle-09"></i>
                             <p>Users</p>
@@ -105,7 +99,7 @@
                             include("../../connect/connect.php");
 
                             $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
-                            $sql =  "SELECT Admin_ID,Admin_Fname FROM admin WHERE Admin_ID = '$AdminID'";
+                            $sql =  "SELECT Admin_ID,Admin_Fname FROM superadmin WHERE Admin_ID = '$AdminID'";
                             $result = mysqli_query($conn, $sql);
 
                             if (mysqli_num_rows($result) > 0) {

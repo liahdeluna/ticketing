@@ -18,9 +18,6 @@
             <li class="nav-item">
               <a class="nav-link" data-toggle="tab" href="#Network">Network Concern</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#Other">Other Concern</a>
-            </li>
           </ul>
             <div class="tab-content">
                 <div id="Software" class="tab-pane active"><br>

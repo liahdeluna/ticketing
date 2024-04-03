@@ -6,7 +6,7 @@
                 <?php
 
                     include("../../connect/connect.php");
-                    $query = "SELECT User_Type FROM user WHERE User_Type = 'User' ORDER BY User_Type";
+                    $query = "SELECT User_Type FROM user ORDER BY User_Type";
                     $query_run = mysqli_query($conn, $query);
                     $row = mysqli_num_rows($query_run);
 
@@ -14,7 +14,7 @@
                 ?>
                 <div class="number-card-divider"></div>
                 <div class="number-card-progress-wrapper">
-                    <div class="tagline number-card-currency">NORMAL USERS</div>
+                    <div class="tagline number-card-currency">USERS</div>
                 </div>
             </div>
             <div class="divider"></div>

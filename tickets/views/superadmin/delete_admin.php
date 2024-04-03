@@ -12,13 +12,13 @@ if($conn->query($deleteTicketCommentsQuery) === TRUE) {
         // Proceed to delete the records in the admin_to_users table
         $sql = "DELETE from admin_to_users where User_Id = '$delete_id'";
         if($conn->query($sql) === TRUE){
-            // Finally, delete the user record
-            $sql2 = "DELETE from user where User_ID = '$delete_id'";
+            // Finally, delete the admin record
+            $sql2 = "DELETE from admin where User_ID = '$delete_id'";
             if($conn->query($sql2) === TRUE){
-                echo"<script>alert('Successfully deleted user')</script>";
+                echo"<script>alert('Successfully deleted admin')</script>";
                 echo "<script>window.open('asd654198ZXoi.php','_SELF')</script>";
             } else {
-                echo "Error deleting user: " . $conn->error;
+                echo "Error deleting admin: " . $conn->error;
             }
         } else {
             echo "Error deleting records from admin_to_users: " . $conn->error;

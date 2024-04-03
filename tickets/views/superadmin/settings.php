@@ -74,12 +74,6 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="ticketcreationforuser.php">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>Create Ticket - User</p>
-                        </a>
-                    </li>
-                    <li>
                         <a class="nav-link" href="asd654198ZXoi.php">
                             <i class="nc-icon nc-circle-09"></i>
                             <p>Users</p>
@@ -103,7 +97,7 @@
                             include("../../connect/connect.php");
 
                             $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
-                            $sql =  "SELECT Admin_ID,Admin_Fname FROM admin WHERE Admin_ID = '$AdminID'";
+                            $sql =  "SELECT Admin_ID,Admin_Fname FROM superadmin WHERE Admin_ID = '$AdminID'";
                             $result = mysqli_query($conn, $sql);
 
                             if (mysqli_num_rows($result) > 0) {
@@ -196,7 +190,7 @@
                                     $New2 =  mysqli_real_escape_string($conn,$_POST["pass2"]);
                                     $Password = md5($New1);
 
-                                    $select_post = "SELECT * FROM admin WHERE Admin_ID = '$AdminID'";
+                                    $select_post = "SELECT * FROM superadmin WHERE Admin_ID = '$AdminID'";
                                     $run_posts = $conn->query($select_post);
                                     if ($run_posts->num_rows > 0) {
                                         while($row = $run_posts->fetch_assoc()){

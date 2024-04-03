@@ -74,12 +74,6 @@
                             <p>Ticket Archives</p>
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="ticketcreationforuser.php">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>Create Ticket - User</p>
-                        </a>
-                    </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="#">
                             <i class="nc-icon nc-circle-09"></i>
@@ -104,7 +98,7 @@
                             include("../../connect/connect.php");
 
                             $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
-                            $sql =  "SELECT Admin_ID,Admin_Fname FROM admin WHERE Admin_ID = '$AdminID'";
+                            $sql =  "SELECT Admin_ID,Admin_Fname FROM superadmin WHERE Admin_ID = '$AdminID'";
                             $result = mysqli_query($conn, $sql);
 
                             if (mysqli_num_rows($result) > 0) {
@@ -123,24 +117,6 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="navbar-nav ml-auto">
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span class="no-icon">Account</span>
-                                </a>
-                            </li>
-                           <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="no-icon">Dropdown</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                    <div class="divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
-                                </div>
-                            </li>   DROPDOWN AND ACCOUNT LINK -->
                             <li class="nav-item">
                                 <a class="nav-link" href="logout.php">
                                     <span class="no-icon">Log out</span>
@@ -165,9 +141,9 @@
                                             <div class="col-md-3 px-2">
                                                 <div class="form-group">
                                                     <label>User Type</label>
-                                                    <Select type="text" class="form-control"  name="Utype" required>
+                                                    <Select type="text" class="form-control"  name="Utype" required readonly>
                                                             <option value="Admin">ADMIN</option>
-                                                            <option value="User">USER</option>
+                                                           
                                                     </Select>
                                                 </div>
                                             </div>
@@ -196,6 +172,41 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row"> 
+                                            <div class="col-md-3 pr-2">
+                                                <div class="form-group">
+                                                    <label>Tier Level</label>
+                                                    <Select type="text" class="form-control"  name="Tier" required>
+                                                            <option value="0">Top Management</option>
+                                                            <option value="1">Middle Management</option>
+                                                            <option value="2">Employee</option>
+                                                    </Select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 px-2">
+                                                <div class="form-group">
+                                                    <label>Specialty</label><br>
+                                                    <input type="checkbox" id="hardware" name="Specialty[]" value="h">
+                                                    <label for="hardware">Hardware</label><br>
+                                                    <input type="checkbox" id="software" name="Specialty[]" value="s">
+                                                    <label for="software">Software</label><br>
+                                                    <input type="checkbox" id="network" name="Specialty[]" value="n">
+                                                    <label for="network">Network</label><br>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 pr-2">
+                                                <div class="form-group">
+                                                    <label>Department</label>
+                                                    <input type="text" class="form-control" name="Dept" placeholder="ITS Department" >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 pl-2">
+                                                <div class="form-group">
+                                                    <label>Job Title</label>
+                                                    <input type="text" class="form-control" name="job" placeholder="Senior IT Support">
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-4 pr-2">
                                                 <div class="form-group">
@@ -203,24 +214,10 @@
                                                     <input type="password" class="form-control" placeholder="****" name="pass" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 px-2">
+                                            <div class="col-md-4 px-2">
                                                 <div class="form-group">
                                                     <label>Number</label>
                                                     <input type="number" class="form-control" placeholder="09123456789" name="Mnumber" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 pr-2">
-                                                <div class="form-group">
-                                                    <label>Department</label>
-                                                    <input type="text" class="form-control" name="Dept" placeholder="ITS Department" >
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 pl-2">
-                                                <div class="form-group">
-                                                    <label>Job title</label>
-                                                    <input type="text" class="form-control" name="job" placeholder="Senior IT Support">
                                                 </div>
                                             </div>
                                         </div>
@@ -238,13 +235,17 @@
                                         $FirstName = mysqli_real_escape_string($conn,$_POST["FName"]);
                                         $Lastname =  mysqli_real_escape_string($conn,$_POST["Lname"]);
                                         $Nickname = mysqli_real_escape_string($conn,$_POST["Nick"]);
+                                        $Tier = mysqli_real_escape_string($conn,$_POST["Tier"]);
+                                        if (isset($_POST['Specialty'])) {
+                                            $Specialty = implode('', $_POST['Specialty']);
+                                          } else {$Specialty = "none";}                                    
                                         $Password =  mysqli_real_escape_string($conn,$_POST["pass"]);
                                         $Password = md5($Password);
                                         $Mobile = mysqli_real_escape_string($conn,$_POST["Mnumber"]);
                                         $Department =  mysqli_real_escape_string($conn,$_POST["Dept"]);
                                         $Jobdesc = mysqli_real_escape_string($conn,$_POST["job"]);
 
-                                        $check_user = "SELECT User_ID FROM user WHERE BINARY User_ID = '$EID'";
+                                        $check_user = "SELECT User_ID FROM admin WHERE BINARY User_ID = '$EID'";
                                         $run = mysqli_query($conn,$check_user);
                                               
                                             if(mysqli_num_rows($run)>0){
@@ -299,30 +300,24 @@
                                                         echo "<script>alert('No special characters!')</script>";
                                                             die();
                                             }
+                                            elseif($Specialty == "none"){
+                                                echo "<script>alert('Specialty should not be none!')</script>";
+                                                    die();
+                                            }
                                             else{
-                                                    $sql = "INSERT INTO user (User_ID, user_Fname,User_Lname,User_MobileNum, User_Dept, User_JobDesc, User_Pass, User_Nickname, User_type) VALUES ('$EID','$FirstName','$Lastname','$Mobile','$Department','$Jobdesc','$Password','$Nickname','$Usertype')";
-                                                            if($conn->query($sql) === TRUE){
-                                                                if ($Usertype == "Admin") {
-                                                                        $sql2 = "INSERT INTO admin_to_users (Admin_Id, User_Id) VALUES ('$AdminID', '$EID')";
-                                                                    if($conn->query($sql2) === TRUE){
-                                                                        echo"<script>alert('SUCCESFULLY CREATED NEW USER')</script>";
-                                                                        echo "<script>window.open('asd654198ZXoi.php','_SELF')</script>";
-                                                                    }
-                                                                }else{
-                                                                    echo"<script>alert('SUCCESFULLY CREATED NEW USER')</script>";
-                                                                    echo "<script>window.open('asd654198ZXoi.php','_SELF')</script>";
-                                                                }
-                                                                
-                                                            }
+                                                    $sql = "INSERT INTO admin (User_ID, user_Fname,User_Lname,User_MobileNum, User_Dept, User_JobDesc, User_Pass, User_Nickname, User_type, Tier, Specialty) VALUES ('$EID','$FirstName','$Lastname','$Mobile','$Department','$Jobdesc','$Password','$Nickname','$Usertype', '$Tier', '$Specialty')";
+                                                    $conn->query($sql);
+                                                    echo "<script>alert('New admin account created successfully!')</script>";
                                             }
 
 
                                                     
                                                   $conn->close();
-                                }
+                                 }
+                                 
                         ?> 
                         <?php include("usertables.php"); ?>
-
+                        
                     </div>
                 </div>
             </div>
@@ -334,6 +329,7 @@
                             <script>
                                 document.write(new Date().getFullYear())
                             </script>
+                           
                             <a href="#">SPCF</a>, made with love for a better web
                         </p>
                     </nav>
