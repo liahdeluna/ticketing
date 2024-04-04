@@ -38,6 +38,7 @@
     <!-- CSS Files -->
     <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../../assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
+    <link rel="stylesheet" href="../../assets/css/cards.css">
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../../assets/css/demo.css" rel="stylesheet" />
 </head>
@@ -78,6 +79,12 @@
                             <p>Ticket Archives</p>
                         </a>
                     </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Create Ticket - User</p>
+                        </a>
+                    </li>
                     <li>
                          <!-- link: asd654198ZXoi.php -->
                         <a class="nav-link" href="asd654198ZXoi.php">
@@ -105,6 +112,7 @@
                             include("../../connect/connect.php");
 
                             $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
+                            $_SESSION['AdminID'] = $AdminID;
                             $sql =  "SELECT User_ID, user_Fname FROM admin WHERE User_ID = '$AdminID'";
                             $result = mysqli_query($conn, $sql);
 
@@ -137,9 +145,25 @@
             <div class="content"><!-- Start of Content -->
                 <div class="container-fluid">
                     <div class="rowow w-rowow">
-                            <?php include("Software.php");?>
-                            <?php include("Hardware.php");?>
-                            <?php include("Network.php");?>
+
+                        <?php
+                            include("../../connect/connect.php");
+                            $code = "";
+                            $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
+                            $sql =  "SELECT Specialty FROM admin WHERE User_ID = '$AdminID'";
+                            $result = mysqli_query($conn, $sql);
+
+                            if (mysqli_num_rows($result) > 0) {
+                            while($row = mysqli_fetch_assoc($result)) {
+                                $code = $row['Specialty'];
+                                $_SESSION['code'] = $code;
+                            }}
+                            
+                            if (str_contains($code, 's')) { include("Software.php"); }
+                            if (str_contains($code, 'h')) { include("Hardware.php"); }
+                            if (str_contains($code, 'n')) { include("Network.php"); }
+                        ?>
+                            
                     </div>
                     <div class="row">
                         <?php include("tickettablefordashboard.php");?>

@@ -1,3 +1,8 @@
+<?php 
+    session_start();
+    $AdminID = $_SESSION['AdminID'];
+?>
+
 <link rel="stylesheet" href="../../assets/css/cards.css">
 
     <div class="basic-column w-col w-col-3">
@@ -6,7 +11,7 @@
                 <?php
 
                     include("../../connect/connect.php");
-                    $query = "SELECT Ticket_type FROM tickets WHERE Ticket_Type = 'Network Concern' AND Ticket_Status = 'Pending' ORDER BY Ticket_Type";
+                    $query = "SELECT Ticket_type FROM tickets WHERE Ticket_Type = 'Network Concern' AND Ticket_Status = 'Pending' AND Ticket_Assigned = '$AdminID' ORDER BY Ticket_Type";
                     $query_run = mysqli_query($conn, $query);
                     $row = mysqli_num_rows($query_run);
 
@@ -18,7 +23,7 @@
                 </div>
             </div>
             <div class="divider"></div>
-            <div class="style-label">Number of Tickets with Network Concern</div>
+            <div class="style-label">Number of pending Tickets<br>with Network Concern</div>
         </div>
     </div>
 
