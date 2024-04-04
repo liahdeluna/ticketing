@@ -1,5 +1,5 @@
 <?php 
-    session_start();
+    if(!isset($_SESSION)) { session_start(); }
     $AdminID = $_SESSION['AdminID'];
     $code = $_SESSION['code'];
     $Shide = ""; $Hhide = ""; $Nhide = ""; 

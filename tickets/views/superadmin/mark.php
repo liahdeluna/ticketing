@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    if(!isset($_SESSION)) { session_start(); }
     include("../../connect/connect.php");
     $TicketNum = $_GET['TicketNumber'];
     date_default_timezone_set('Asia/Singapore');

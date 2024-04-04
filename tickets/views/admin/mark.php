@@ -1,5 +1,5 @@
 <?php
-session_start();
+if(!isset($_SESSION)) { session_start(); }
 include("../../connect/connect.php"); // Assuming this file contains database connection details
 
 $TicketNum = $_SESSION['TicketNum'];

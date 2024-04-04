@@ -1,5 +1,5 @@
 <?php
-session_start();
+if(!isset($_SESSION)) { session_start(); }
 
 // Redirect to login page if AdminId session variable is not set
 if (!$_SESSION['AdminId']) {
