@@ -26,7 +26,7 @@
     <div class="card strpied-tabled-with-hover">
         <div class="card-header ">
             <h4 class="card-title">TICKET LIST</h4>
-            <p class="card-category">LIST OF TICKETS SUBMITTED TO YOU</p>
+            <p class="card-category">LIST OF PENDING TICKETS SUBMITTED TO YOU</p>
         </div>
         <?php
             include("../../connect/connect.php");

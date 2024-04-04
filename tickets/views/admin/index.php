@@ -45,11 +45,6 @@ if (!$_SESSION['AdminId']) {
 <body>
     <div class="wrapper">
         <div class="sidebar" data-color="blue" data-image="../../assets/img/#">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="#" class="simple-text">
@@ -187,7 +182,7 @@ if (!$_SESSION['AdminId']) {
                             <div class="card strpied-tabled-with-hover">
                                 <div class="card-header ">
                                     <h4 class="card-title">Filtered List</h4>
-                                    <p class="card-category">List of all ticket created by users</p>
+                                    <p class="card-category">List of all tickets submitted to you</p>
                                 </div>
                                 <div id="Software" class="tab-pane active"><br>
                                     <div class="card-body table-full-width table-responsive">
