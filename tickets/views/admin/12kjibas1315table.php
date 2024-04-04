@@ -1,10 +1,9 @@
 <?php
   session_start();
   if(!$_SESSION['AdminId']){
-  header("Location: ..\..\login.php");
+  header("Location: ..\..\adminlogin.php");
   }
 ?>
-
 
 <!-- 
 =========================================================
@@ -45,11 +44,6 @@
 <body>
     <div class="wrapper">
         <div class="sidebar" data-color="blue" data-image="../../assets/img/#">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="#" class="simple-text">
@@ -75,6 +69,12 @@
                             <p>Ticket Archives</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ticketcreationforuser.php">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Create Ticket - User</p>
+                        </a>
+                    </li>
                     <li>
                         <a class="nav-link" href="asd654198ZXoi.php">
                             <i class="nc-icon nc-circle-09"></i>
@@ -94,21 +94,23 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class="container-fluid">
+
                         <?php
 
                             include("../../connect/connect.php");
 
                             $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
-                            $sql =  "SELECT Admin_ID,Admin_Fname FROM admin WHERE Admin_ID = '$AdminID'";
+                            $_SESSION['AdminID'] = $AdminID;
+                            $sql =  "SELECT User_ID, user_Fname FROM admin WHERE User_ID = '$AdminID'";
                             $result = mysqli_query($conn, $sql);
 
                             if (mysqli_num_rows($result) > 0) {
                             while($row = mysqli_fetch_assoc($result)) {
-                                    echo '<a class="navbar-brand" href="#'.$row["Admin_Fname"].'">'.$row["Admin_Fname"]. '</a>';
+                                    echo '<a class="navbar-brand" href="#'.$row["user_Fname"].'">'.$row["user_Fname"]. '</a>';
                               }
                               }else{
                                         session_destroy();
-                                        header("location:../../login.php");
+                                        header("location:../../adminlogin.php");
                                     } 
                         ?>
                     <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -118,24 +120,6 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="navbar-nav ml-auto">
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span class="no-icon">Account</span>
-                                </a>
-                            </li>
-                           <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="no-icon">Dropdown</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                    <div class="divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
-                                </div>
-                            </li>   DROPDOWN AND ACCOUNT LINK -->
                             <li class="nav-item">
                                 <a class="nav-link" href="logout.php">
                                     <span class="no-icon">Logout</span>

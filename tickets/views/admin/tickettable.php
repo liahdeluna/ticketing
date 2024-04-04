@@ -1,3 +1,21 @@
+<?php 
+    session_start();
+    $AdminID = $_SESSION['AdminID'];
+    $code = $_SESSION['code'];
+    $Shide = ""; $Hhide = ""; $Nhide = ""; 
+    $SActive = ""; $HActive = ""; $NActive = "";
+
+    if (!str_contains($code, 'h')) { $Hhide = 'hidden'; }
+    if (!str_contains($code, 's')) { $Shide = 'hidden'; }
+    if (!str_contains($code, 'n')) { $Nhide = 'hidden'; }
+
+    if (str_contains($code, 's')) { $SActive = "active"; }
+    else if (str_contains($code, 'h')) { $HActive = "active"; }
+    else if ($code == "n") { $NActive = "active"; }
+
+?>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="button.css">
@@ -8,24 +26,34 @@
     <div class="card strpied-tabled-with-hover">
         <div class="card-header ">
             <h4 class="card-title">TICKET LIST</h4>
-            <p class="card-category">LIST OF TICKETS CREATED BY USER</p>
+            <p class="card-category">LIST OF TICKETS SUBMITTED TO YOU</p>
         </div>
+        <?php
+            include("../../connect/connect.php");
+            $code = "";
+            $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
+            $sql =  "SELECT Specialty FROM admin WHERE User_ID = '$AdminID'";
+            $result = mysqli_query($conn, $sql);
+
+            if (mysqli_num_rows($result) > 0) {
+            while($row = mysqli_fetch_assoc($result)) {
+                $code = $row['Specialty'];
+                $_SESSION['code'] = $code;
+            }}
+        ?>
         <ul class="nav nav-tabs nav-justified" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#Software">Software Concern</a>
+            <li class="nav-item" <?php echo $Shide; ?> >
+              <a class="nav-link <?php echo $SActive; ?>" data-toggle="tab" href="#Software">Software Concern</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#Hardware">Hardware Concern</a>
+            <li class="nav-item" <?php echo $Hhide; ?> >
+              <a class="nav-link <?php echo $HActive; ?>" data-toggle="tab" href="#Hardware">Hardware Concern</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#Network">Network Concern</a>
+            <li class="nav-item" <?php echo $Nhide; ?> >
+              <a class="nav-link <?php echo $NActive; ?>" data-toggle="tab" href="#Network">Network Concern</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#Other">Other Concern</a>
-            </li>
-          </ul>
-            <div class="tab-content">
-                <div id="Software" class="tab-pane active"><br>
+        </ul>
+        <div class="tab-content">
+                <div id="Hardware" class="tab-pane <?php echo $HActive; ?>"><br>
                     <div class="card-body table-full-width table-responsive">
                         <table class="table table-hover table-striped">
                             <thead>
@@ -35,63 +63,13 @@
                                 <th>Remarks</th>
                                 <th>Priority</th>
                                 <th>Date Created</th>
-                                <th>Account Created by</th>
+                                <th>Ticket Submitted by</th>
                                 <th>Access ticket</th>
                             </thead>
                             <tbody>
                                <?php 
                                     include("../../connect/connect.php");
-                                    $select_post = "SELECT * FROM tickets JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending'";
-                                    $run_posts = $conn->query($select_post);
-
-                                    if ($run_posts->num_rows > 0) {
-                                        while($row = $run_posts->fetch_assoc()){
-
-                                                $post_Num = $row['Ticket_Number'];
-                                                $post_Subj = $row ['Ticket_Subj'];
-                                                $post_Type = $row['Ticket_type'];
-                                                $post_Remarks = $row['Ticket_Remarks'];
-                                                $post_Prio = $row['Ticket_Priority'];
-                                                $post_Start = $row['Ticket_DateStart'];
-                                                $post_user_Fname = $row['user_Fname'];
-                                                $post_Fname = $row['User_Lname'];
-
-                                            if($post_Type == "Software Concern"){
-                                                echo'<tr>';
-                                                    echo'<td>'.$row["Ticket_Number"].'</td>';
-                                                    echo'<td>'.$row["Ticket_Subj"].'</td>';
-                                                    echo'<td>'.$row["Ticket_type"].'</td>';
-                                                    echo'<td>'.$row["Ticket_Remarks"].'</td>';
-                                                    echo'<td>'.$row["Ticket_Priority"].'</td>';
-                                                    echo'<td>'.$row["Ticket_DateStart"].'</td>';
-                                                    echo'<td>'.$row["user_Fname"].' '.$row["User_Lname"].'</td>';
-                                                    echo'<td><a href = "accesstickets.php?TicketNumber='.$row['Ticket_Number'].'" class = "fa fa-check buttonx"></i></td>';
-                                                echo'</tr>';
-                                            }
-                                        }
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div id="Hardware" class="tab-pane fade"><br>
-                    <div class="card-body table-full-width table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <th>Ticket Number</th>
-                                <th>Subject</th>
-                                <th>Concern Type</th>
-                                <th>Remarks</th>
-                                <th>Priority</th>
-                                <th>Date Created</th>
-                                <th>Account Created by</th>
-                                <th>Access ticket</th>
-                            </thead>
-                            <tbody>
-                               <?php 
-                                    include("../../connect/connect.php");
-                                    $select_post = "SELECT * FROM tickets JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending'";
+                                    $select_post = "SELECT * FROM tickets JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending' AND Ticket_Assigned = '$AdminID'";
                                     $run_posts = $conn->query($select_post);
 
                                     if ($run_posts->num_rows > 0) {
@@ -125,7 +103,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="Network" class="tab-pane fade"><br>
+                <div id="Software" class="tab-pane <?php echo $SActive; ?>"><br>
                     <div class="card-body table-full-width table-responsive">
                         <table class="table table-hover table-striped">
                             <thead>
@@ -135,13 +113,64 @@
                                 <th>Remarks</th>
                                 <th>Priority</th>
                                 <th>Date Created</th>
-                                <th>Account Created by</th>
+                                <th>Ticket Submitted by</th>
+                                <th>Access ticket</th>
+                            </thead>
+                            <tbody>
+                               <?php
+
+                                    include("../../connect/connect.php");
+                                    $select_post = "SELECT * FROM tickets JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending' AND Ticket_Assigned = '$AdminID'";
+                                    $run_posts = $conn->query($select_post);
+
+                                    if ($run_posts->num_rows > 0) {
+                                        while($row = $run_posts->fetch_assoc()){
+
+                                                $post_Num = $row['Ticket_Number'];
+                                                $post_Subj = $row ['Ticket_Subj'];
+                                                $post_Type = $row['Ticket_type'];
+                                                $post_Remarks = $row['Ticket_Remarks'];
+                                                $post_Prio = $row['Ticket_Priority'];
+                                                $post_Start = $row['Ticket_DateStart'];
+                                                $post_user_Fname = $row['user_Fname'];
+                                                $post_Fname = $row['User_Lname'];
+
+                                            if($post_Type == "Software Concern"){
+                                                echo'<tr>';
+                                                    echo'<td>'.$row["Ticket_Number"].'</td>';
+                                                    echo'<td>'.$row["Ticket_Subj"].'</td>';
+                                                    echo'<td>'.$row["Ticket_type"].'</td>';
+                                                    echo'<td>'.$row["Ticket_Remarks"].'</td>';
+                                                    echo'<td>'.$row["Ticket_Priority"].'</td>';
+                                                    echo'<td>'.$row["Ticket_DateStart"].'</td>';
+                                                    echo'<td>'.$row["user_Fname"].' '.$row["User_Lname"].'</td>';
+                                                    echo'<td><a href = "accesstickets.php?TicketNumber='.$row['Ticket_Number'].'" class = "fa fa-check buttonx"></i></td>';
+                                                echo'</tr>';
+                                            }
+                                        }
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="Network" class="tab-pane <?php echo $NActive; ?>"><br>
+                    <div class="card-body table-full-width table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <th>Ticket Number</th>
+                                <th>Subject</th>
+                                <th>Concern Type</th>
+                                <th>Remarks</th>
+                                <th>Priority</th>
+                                <th>Date Created</th>
+                                <th>Ticket Submitted by</th>
                                 <th>Access ticket</th>
                             </thead>
                             <tbody>
                                <?php 
                                     include("../../connect/connect.php");
-                                    $select_post = "SELECT * FROM tickets JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending'";
+                                    $select_post = "SELECT * FROM tickets JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending' AND Ticket_Assigned = '$AdminID'";
                                     $run_posts = $conn->query($select_post);
 
                                     if ($run_posts->num_rows > 0) {
@@ -174,57 +203,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div id="Other" class="tab-pane fade"><br>
-                    <div class="card-body table-full-width table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <th>Ticket Number</th>
-                                <th>Subject</th>
-                                <th>Concern Type</th>
-                                <th>Remarks</th>
-                                <th>Priority</th>
-                                <th>Date Created</th>
-                                <th>Account Created by</th>
-                                <th>Access ticket</th>
-                            </thead>
-                            <tbody>
-                               <?php 
-                                    include("../../connect/connect.php");
-                                    $select_post = "SELECT * FROM tickets JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending'";
-                                    $run_posts = $conn->query($select_post);
-
-                                    if ($run_posts->num_rows > 0) {
-                                        while($row = $run_posts->fetch_assoc()){
-
-                                                $post_Num = $row['Ticket_Number'];
-                                                $post_Subj = $row ['Ticket_Subj'];
-                                                $post_Type = $row['Ticket_type'];
-                                                $post_Remarks = $row['Ticket_Remarks'];
-                                                $post_Prio = $row['Ticket_Priority'];
-                                                $post_Start = $row['Ticket_DateStart'];
-                                                $post_user_Fname = $row['user_Fname'];
-                                                $post_Fname = $row['User_Lname'];
-
-                                            if($post_Type == "Others"){
-                                                echo'<tr>';
-                                                    echo'<td>'.$row["Ticket_Number"].'</td>';
-                                                    echo'<td>'.$row["Ticket_Subj"].'</td>';
-                                                    echo'<td>'.$row["Ticket_type"].'</td>';
-                                                    echo'<td>'.$row["Ticket_Remarks"].'</td>';
-                                                    echo'<td>'.$row["Ticket_Priority"].'</td>';
-                                                    echo'<td>'.$row["Ticket_DateStart"].'</td>';
-                                                    echo'<td>'.$row["user_Fname"].' '.$row["User_Lname"].'</td>';
-                                                    echo'<td><a href = "accesstickets.php?TicketNumber='.$row['Ticket_Number'].'" class = "fa fa-check buttonx"></i></td>';
-                                                echo'</tr>';
-                                            }
-                                        }
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            </div>
           </div>
                     
     </div>

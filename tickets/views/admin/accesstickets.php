@@ -212,25 +212,25 @@
                                             }
                                             else
                                             {
-                                                        echo  "<h4 class='card-title' style='color:black'>No Comment</h4>"; 
+                                                        echo  "<h4 class='card-title' style='color:black'>No Resolution Yet</h4>"; 
                                             }
                                 ?>
                                     </div>
                                 </div>
                                 <hr class="col-md-9" style="margin-left: 13%;">
                                 <div class="card-header" style="margin-left: 10%">
-                                    <h4 class="card-title" style="color:black;">Create Comment</h4>
+                                    <h4 class="card-title" style="color:black;">Create Resolution</h4>
                                 </div>
                                 <div class="card-body">
                                     <?php echo '<form method="post" class="form" action="accesstickets.php?TicketNumber='.$TicketNum.'">'?>
                                         <div class="row">
                                             <div class="col-md-10 pl-3" style="margin-left: 10%">
                                                 <div class="form-group">
-                                                    <textarea rows="10" cols="80" class="form-control" placeholder="Sample Comment" name="Comment" required></textarea>
+                                                    <textarea rows="10" cols="80" class="form-control" placeholder="Sample Resolution" name="Comment" required></textarea>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Submit Comment</button>
+                                        <button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Submit Resolution</button>
                                     </form>
                                 </div>
                             </div>

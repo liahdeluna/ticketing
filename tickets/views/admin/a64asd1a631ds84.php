@@ -79,8 +79,9 @@
                             <p>Ticket Archives</p>
                         </a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">
+                    <li class="nav-item">
+                        <!-- link: ticketcreationforuser.php -->
+                        <a class="nav-link" href="ticketcreationforuser.php">
                             <i class="nc-icon nc-paper-2"></i>
                             <p>Create Ticket - User</p>
                         </a>

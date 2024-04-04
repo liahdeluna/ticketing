@@ -2,12 +2,8 @@
     session_start();
     $AdminID = $_SESSION['AdminID'];
     $code = $_SESSION['code'];
-    $Shide = "";
-    $Hhide = "";
-    $Nhide = "";
-    $SActive = "";
-    $HActive = "";
-    $NActive = "";
+    $Shide = ""; $Hhide = ""; $Nhide = ""; 
+    $SActive = ""; $HActive = ""; $NActive = "";
 
     if (!str_contains($code, 'h')) { $Hhide = 'hidden'; }
     if (!str_contains($code, 's')) { $Shide = 'hidden'; }
@@ -39,9 +35,9 @@
             <li class="nav-item" <?php echo $Nhide; ?> >
               <a class="nav-link <?php echo $NActive; ?>" data-toggle="tab" href="#Network">Network Concern</a>
             </li>
-          </ul>
+        </ul>
             <div class="tab-content">
-            <div id="Hardware" class="tab-pane <?php echo $HActive; ?>"><br>
+                <div id="Hardware" class="tab-pane <?php echo $HActive; ?>"><br>
                     <div class="card-body table-full-width table-responsive">
                         <table class="table table-hover table-striped">
                             <thead>
@@ -185,7 +181,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+            </div>
           </div>
                     
     </div>
