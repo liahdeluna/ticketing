@@ -161,14 +161,14 @@ if (!$_SESSION['AdminId']) {
                                             <div class="col-md-5 pr-2">
                                                 <div class="form-group">
                                                     <label>Ticket Subject</label>
-                                                    <select type="text" class="form-control" name="TSubj" id="TSubj" required onchange="updateConcernType()">
+                                                    <select type="text" class="form-control" name="TSubj" id="TSubj" required onchange="updateConcernType(); updatePriority();">
                                                         <?php
                                                             include("../../connect/connect.php");
                                                             $sql = "SELECT * FROM problems ORDER BY problem_id ASC";
                                                             $result = mysqli_query($conn, $sql);
 
                                                             while ($row = mysqli_fetch_array($result)) {
-                                                                echo '<option value="'.$row['problem_category']. '">'.$row['problem'].  '</option>';
+                                                                echo '<option value="'.$row['problem'].'" data-high-priority="'.$row['is_high_priority'].'">'.$row['problem'].'</option>';
                                                             }                                                            
                                                         ?>
                                                     </select>
@@ -182,41 +182,10 @@ if (!$_SESSION['AdminId']) {
                                             </div>
                                             <div class="col-md-3 pr-2">
                                                 <div class="form-group">
-                                                    <label>Ticket Priority</label>
-                                                     <input readonly type="text" class="form-control" value="High Priority" name="Tprio" id="tPrio" required>
+                                                <label>Ticket Priority</label>
+                                                <input readonly type="text" class="form-control" value="High Priority" name="Tprio" id="tPrio" required>
                                                 </div>
                                             </div>
-                                            
-                                            <script>
-                                                function updateConcernType() {
-                                                    
-                                                    var selectedSubject = document.getElementById("TSubj").value;
-                                                    document.getElementById("tConcern").value = selectedSubject;
-                                                }
-                                                function updatePriority() {
-                                                    
-                                                    var selectedRequestor = document.getElementById("Requestor");
-                                                    var selectedTier = selectedRequestor.options[selectedRequestor.selectedIndex].getAttribute('data-tier');
-                                                    
-                                                    var priorityLevel = '';
-                                                    switch (selectedTier) {
-                                                        case '0':
-                                                            priorityLevel = 'High Priority';
-                                                            break;
-                                                        case '1':
-                                                            priorityLevel = 'Medium Priority';
-                                                            break;
-                                                        case '2':
-                                                            priorityLevel = 'Low Priority';
-                                                            break;
-                                                        default:
-                                                            priorityLevel = 'Unknown Priority';
-                                                            break;
-                                                    }
-                                                    
-                                                    document.getElementById("tPrio").value = priorityLevel;
-                                                }
-                                            </script>
                                         </div>
         
                                         <div class="row">
@@ -228,10 +197,12 @@ if (!$_SESSION['AdminId']) {
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md- pr-2">
+                                            <div class="col-md-4 pr-2">
                                                 <div class="form-group">
                                                     <label>Assigned to</label>
-                                                    <input type="text" class="form-control" name="Admin" Placeholder="Admin XXXX" required>
+                                                    <select type="text" class="form-control" name="Admin" id="AssignedAdmin" required>
+                                                        <option value = "EMP001">EMP001 - Marvin Reyes </options>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,6 +249,128 @@ if (!$_SESSION['AdminId']) {
 <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
 
+<script>
+    function updateConcernType() {
+        <?php 
+            include("../../connect/connect.php");
+            $sql = "SELECT problem, problem_category FROM problems";
+            $result = $conn->query($sql);
+            $data = array();
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+            }
+        ?>
+        var problemData = <?php echo json_encode($data); ?>;
+
+        var selectedSubject = document.getElementById("TSubj").value;
+        var concernType = "";
+        
+        for (var i = 0; i < problemData.length; i++) {
+            if (problemData[i].problem === selectedSubject) {
+                concernType = problemData[i].problem_category;
+            }
+        }
+
+        document.getElementById("tConcern").value = concernType;
+    }
+    
+    function updatePriority() {
+        var selectedRequestor = document.getElementById("Requestor");
+        var selectedTier = selectedRequestor.options[selectedRequestor.selectedIndex].getAttribute('data-tier');
+        var selectedProblem = document.getElementById("TSubj");
+        var isHighPriority = selectedProblem.options[selectedProblem.selectedIndex].getAttribute('data-high-priority');
+        var priorityLevel = '';
+        if (isHighPriority == '1') {
+            priorityLevel = 'High Priority'; 
+        } else {
+            switch (selectedTier) {
+                case '0':
+                    priorityLevel = 'High Priority';
+                    break;
+                case '1':
+                    priorityLevel = 'Medium Priority';
+                    break;
+                case '2':
+                    priorityLevel = 'Low Priority';
+                    break;
+                default:
+                    priorityLevel = 'Unknown Priority';
+                    break;
+            }
+        }
+        
+        document.getElementById("tPrio").value = priorityLevel;
+
+        var requestorID = document.getElementById("Requestor").value;
+        var concernType = document.getElementById("tConcern").value;
+
+        if (concernType == "Hardware Concern") {
+            concernType = "h";
+        } else if (concernType == "Software Concern") {
+            concernType = "s";
+        } else {
+            concernType = "n";
+        }
+       
+        <?php 
+            include("../../connect/connect.php");
+            $sql = "SELECT * FROM admin";
+            $result = $conn->query($sql);
+            $data = array();
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+            }
+        ?>
+        var adminData = <?php echo json_encode($data); ?>;
+
+        <?php 
+            include("../../connect/connect.php");
+            $sql = "SELECT User_ID, Tier FROM user";
+            $result = $conn->query($sql);
+            $data = array();
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+            }
+        ?>
+        var userData = <?php echo json_encode($data); ?>;
+
+        var requestorTier = 0;
+
+        for (var i = 0; i < userData.length; i++) {
+            if (userData[i].User_ID === requestorID) {
+                requestorTier = userData[i].Tier;
+            }
+        }
+
+        var adminChoices = [];
+
+        for (var i = 0; i < adminData.length; i++) {
+            if (adminData[i].Tier === requestorTier) {
+                if ((adminData[i].Specialty).includes(concernType)) {
+                    adminChoices.push([adminData[i].User_ID, adminData[i].user_Fname, adminData[i].User_Lname]);
+                }
+            }
+        }
+        var dropdownAdmin = document.getElementById("AssignedAdmin");
+        dropdownAdmin.innerHTML = "";
+
+        adminChoices.forEach(option => {
+        const optionElement = document.createElement("option");
+        optionElement.textContent = option[0] + " - " + option[1] + " " + option[2]; // Set the display text
+        optionElement.value = option[0]; // Set the option value
+        dropdownAdmin.appendChild(optionElement);
+      });
+    
+    
+    }
+    
+</script>
 </html>
 
 <?php
@@ -288,10 +381,21 @@ if (isset($_POST['submit'])) {
     $TConcern = mysqli_real_escape_string($conn,$_POST["Concern"]);
     $Priority = mysqli_real_escape_string($conn,$_POST["Tprio"]);
     $Remarks = mysqli_real_escape_string($conn,$_POST["Remarks"]);
-    $UName = mysqli_real_escape_string($conn,$_POST["UserIds"]);
-    $Ticket_Stats = "Pending";
+    $Requestor_ID = mysqli_real_escape_string($conn,$_POST["Requestor"]);
+    $Admin_ID = mysqli_real_escape_string($conn,$_POST["Admin"]);
+    $Requestor_Tier = 0;
 
-    $sql = "INSERT INTO tickets (Ticket_Number, Ticket_Subj, Ticket_type, Ticket_Remarks, Ticket_Priority, Ticket_Status, User_Id) VALUES (NULL,'$Subj','$TConcern','$Remarks','$Priority', '$Ticket_Stats', '$UName')";
+    $sql =  "SELECT Tier FROM user WHERE User_ID = '$Requestor_ID'";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $Requestor_Tier = $row["Tier"];
+        }
+    }
+
+
+    $sql = "INSERT INTO `tickets` (`Ticket_Number`, `Ticket_Subj`, `Ticket_type`, `Ticket_Remarks`, `Ticket_Priority`, `Ticket_Status`, `Ticket_DateStart`, `Ticket_DateEnd`, `User_Id`, `DateCreated`, `Ticket_Tier`, `Ticket_Assigned`) VALUES (NULL, '$Subj', '$TConcern', '$Remarks', '$Priority', 'Pending', current_timestamp(), NULL, '$Requestor_ID', current_timestamp(), '$Requestor_Tier', '$Admin_ID');";
     if ($conn->query($sql) === TRUE) {
         echo "<script>alert('SUCCESSFULLY SUBMITED TICKET')</script>";
         echo "<script>window.open('ticketcreationforuser.php','_self')</script>";

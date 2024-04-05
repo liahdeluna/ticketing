@@ -196,7 +196,7 @@ if (!$_SESSION['AdminId']) {
                     <div class="card">
                         <div class="card-body">
                             <div class="col-md-12 pr-1">
-                                <h4 style="color:black">Resolution:</h4>
+                                <h4 style="color:black">Solution:</h4>
 
                                 <?php
                                 include("../../connect/connect.php");
@@ -211,25 +211,25 @@ if (!$_SESSION['AdminId']) {
                                         echo  "<h4 class='col-md-10' style = 'margin-left:10%; color:black;'>" . $post_Commenter . " (" . $post_CID . "): " .$post_Comment ." </h4>";
                                     }
                                 } else {
-                                    echo  "<h4 class='card-title' style='color:black'>No Resolution Yet</h4>";
+                                    echo  "<h4 class='card-title' style='color:black'>No Solution Yet</h4>";
                                 }
                                 ?>
                             </div>
                         </div>
                         <hr class="col-md-9" style="margin-left: 13%;">
                         <div class="card-header" style="margin-left: 10%">
-                            <h4 class="card-title" style="color:black;">Add Resolution</h4>
+                            <h4 class="card-title" style="color:black;">Add Solution</h4>
                         </div>
                         <div class="card-body">
                             <?php echo '<form method="post" class="form" action="accesstickets.php?TicketNumber=' . $TicketNum . '">' ?>
                             <div class="row">
                                 <div class="col-md-10 pl-3" style="margin-left: 10%">
                                     <div class="form-group">
-                                        <textarea rows="10" cols="80" class="form-control" placeholder="Sample Resolution" name="Comment" required></textarea>
+                                        <textarea rows="10" cols="80" class="form-control" placeholder="Sample Solution" name="Comment" required></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Submit Resolution</button>
+                            <button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Submit Solution</button>
                             </form>
                         </div>
                     </div>

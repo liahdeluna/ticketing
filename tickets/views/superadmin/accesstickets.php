@@ -230,7 +230,7 @@
                                             }
                                             else
                                             {
-                                                        echo  "<h4 class='card-title' style='color:black'>No Resolution</h4>"; 
+                                                        echo  "<h4 class='card-title' style='color:black'>No Solution</h4>"; 
                                             }
                                 ?>
                                     </div>
