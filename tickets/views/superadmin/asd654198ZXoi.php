@@ -63,12 +63,6 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="12kjibas1315table.php">
-                            <i class="nc-icon nc-notes"></i>
-                            <p>Ticket List</p>
-                        </a>
-                    </li>
-                    <li>
                         <a class="nav-link" href="index.php">
                             <i class="nc-icon nc-bag"></i>
                             <p>Ticket Archives</p>
@@ -133,7 +127,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">ADD NEW USER</h4>
+                                    <h4 class="card-title">ADD NEW ADMIN</h4>
                                 </div>
                                 <div class="card-body">
                                     <form method="post" class="form" action="asd654198ZXoi.php">
@@ -221,7 +215,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Create User</button>
+                                        <button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Create Admin</button>
                                     </form>
                                 </div>
                             </div>

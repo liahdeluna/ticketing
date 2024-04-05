@@ -31,12 +31,14 @@
                                 <th>Priority</th>
                                 <th>Date Created</th>
                                 <th>Ticket Attended by</th>
+                                <th>Ticket Submitted by</th>
                                 
                             </thead>
                             <tbody>
                                <?php 
                                     include("../../connect/connect.php");
-                                    $select_post = "SELECT * FROM tickets JOIN admin ON tickets.Ticket_Assigned = admin.User_ID WHERE Ticket_Status = 'Pending'";
+                                    $select_post = "SELECT tickets.Ticket_Number, tickets.Ticket_Subj, tickets.Ticket_type, tickets.Ticket_Remarks, tickets.Ticket_Priority, tickets.Ticket_DateStart, user.user_Fname AS user_Fname, user.User_Lname AS user_Lname, admin.user_Fname AS admin_Fname, admin.User_Lname AS admin_Lname FROM tickets JOIN admin ON tickets.Ticket_Assigned = admin.User_ID JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending';
+                                    ";
                                     $run_posts = $conn->query($select_post);
 
                                     if ($run_posts->num_rows > 0) {
@@ -49,7 +51,9 @@
                                                 $post_Prio = $row['Ticket_Priority'];
                                                 $post_Start = $row['Ticket_DateStart'];
                                                 $post_user_Fname = $row['user_Fname'];
-                                                $post_Fname = $row['User_Lname'];
+                                                $post_User_Lname = $row['user_Lname'];
+                                                $post_admin_Fname = $row['admin_Fname'];
+                                                $post_admin_Lname = $row['admin_Lname'];
 
                                             if($post_Type == "Software Concern"){
                                                 echo'<tr>';
@@ -59,7 +63,9 @@
                                                     echo'<td>'.$row["Ticket_Remarks"].'</td>';
                                                     echo'<td>'.$row["Ticket_Priority"].'</td>';
                                                     echo'<td>'.$row["Ticket_DateStart"].'</td>';
-                                                    echo'<td>'.$row["user_Fname"].' '.$row["User_Lname"].'</td>';
+                                                    echo'<td>'.$row["admin_Fname"].' '.$row["admin_Lname"].'</td>';
+                                                    echo'<td>'.$row["user_Fname"].' '.$row["user_Lname"].'</td>';
+
                                                     
                                                 echo'</tr>';
                                             }
@@ -81,11 +87,13 @@
                                 <th>Priority</th>
                                 <th>Date Created</th>
                                 <th>Ticket Attended by</th>
+                                <th>Ticket Submitted by</th>
                             </thead>
                             <tbody>
                                <?php 
                                     include("../../connect/connect.php");
-                                    $select_post = "SELECT * FROM tickets JOIN admin ON tickets.Ticket_Assigned = admin.User_ID WHERE Ticket_Status = 'Pending'";
+                                    $select_post = "SELECT tickets.Ticket_Number, tickets.Ticket_Subj, tickets.Ticket_type, tickets.Ticket_Remarks, tickets.Ticket_Priority, tickets.Ticket_DateStart, user.user_Fname AS user_Fname, user.User_Lname AS user_Lname, admin.user_Fname AS admin_Fname, admin.User_Lname AS admin_Lname FROM tickets JOIN admin ON tickets.Ticket_Assigned = admin.User_ID JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending';
+                                    ";
                                     $run_posts = $conn->query($select_post);
 
                                     if ($run_posts->num_rows > 0) {
@@ -98,7 +106,9 @@
                                                 $post_Prio = $row['Ticket_Priority'];
                                                 $post_Start = $row['Ticket_DateStart'];
                                                 $post_user_Fname = $row['user_Fname'];
-                                                $post_Fname = $row['User_Lname'];
+                                                $post_User_Lname = $row['user_Lname'];
+                                                $post_admin_Fname = $row['admin_Fname'];
+                                                $post_admin_Lname = $row['admin_Lname'];
 
                                             if($post_Type == "Hardware Concern"){
                                                 echo'<tr>';
@@ -108,7 +118,9 @@
                                                     echo'<td>'.$row["Ticket_Remarks"].'</td>';
                                                     echo'<td>'.$row["Ticket_Priority"].'</td>';
                                                     echo'<td>'.$row["Ticket_DateStart"].'</td>';
-                                                    echo'<td>'.$row["user_Fname"].' '.$row["User_Lname"].'</td>';
+                                                    echo'<td>'.$row["admin_Fname"].' '.$row["admin_Lname"].'</td>';
+                                                    echo'<td>'.$row["user_Fname"].' '.$row["user_Lname"].'</td>';
+
                                                 echo'</tr>';
                                             }
                                         }
@@ -129,12 +141,14 @@
                                 <th>Priority</th>
                                 <th>Date Created</th>
                                 <th>Ticket Attended by</th>
+                                <th>Ticket Submitted by</th>
                                 
                             </thead>
                             <tbody>
                                <?php 
                                     include("../../connect/connect.php");
-                                    $select_post = "SELECT * FROM tickets JOIN admin ON tickets.Ticket_Assigned = admin.User_ID WHERE Ticket_Status = 'Pending'";
+                                    $select_post = "SELECT tickets.Ticket_Number, tickets.Ticket_Subj, tickets.Ticket_type, tickets.Ticket_Remarks, tickets.Ticket_Priority, tickets.Ticket_DateStart, user.user_Fname AS user_Fname, user.User_Lname AS user_Lname, admin.user_Fname AS admin_Fname, admin.User_Lname AS admin_Lname FROM tickets JOIN admin ON tickets.Ticket_Assigned = admin.User_ID JOIN user ON tickets.User_Id = user.User_ID WHERE Ticket_Status = 'Pending';
+                                    ";
                                     $run_posts = $conn->query($select_post);
 
                                     if ($run_posts->num_rows > 0) {
@@ -147,7 +161,9 @@
                                                 $post_Prio = $row['Ticket_Priority'];
                                                 $post_Start = $row['Ticket_DateStart'];
                                                 $post_user_Fname = $row['user_Fname'];
-                                                $post_Fname = $row['User_Lname'];
+                                                $post_User_Lname = $row['user_Lname'];
+                                                $post_admin_Fname = $row['admin_Fname'];
+                                                $post_admin_Lname = $row['admin_Lname'];
 
                                             if($post_Type == "Network Concern"){
                                                 echo'<tr>';
@@ -157,7 +173,9 @@
                                                     echo'<td>'.$row["Ticket_Remarks"].'</td>';
                                                     echo'<td>'.$row["Ticket_Priority"].'</td>';
                                                     echo'<td>'.$row["Ticket_DateStart"].'</td>';
-                                                    echo'<td>'.$row["user_Fname"].' '.$row["User_Lname"].'</td>';
+                                                    echo'<td>'.$row["admin_Fname"].' '.$row["admin_Lname"].'</td>';
+                                                    echo'<td>'.$row["user_Fname"].' '.$row["user_Lname"].'</td>';
+
                                                 echo'</tr>';
                                             }
                                         }

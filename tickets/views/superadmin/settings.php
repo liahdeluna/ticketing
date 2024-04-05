@@ -62,12 +62,6 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="12kjibas1315table.php">
-                            <i class="nc-icon nc-notes"></i>
-                            <p>Ticket List</p>
-                        </a>
-                    </li>
-                    <li>
                         <a class="nav-link" href="index.php">
                             <i class="nc-icon nc-bag"></i>
                             <p>Ticket Archives</p>
