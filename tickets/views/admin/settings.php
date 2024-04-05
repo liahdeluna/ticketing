@@ -1,7 +1,7 @@
 <?php
   if(!isset($_SESSION)) { session_start(); }
   if(!$_SESSION['AdminId']){
-  header("Location: ..\..\login.php");
+  header("Location: ..\..\adminlogin.php");
   }
 ?>
 <!-- 
@@ -42,7 +42,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-color="blue" data-image="../../assets/img/#">
+        <div class="sidebar" data-color="purple" data-image="../../assets/img/#">
             <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -73,6 +73,12 @@
                             <p>Ticket Archives</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ticketcreationforuser.php">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Create Ticket - User</p>
+                        </a>
+                    </li>
                     <li>
                         <a class="nav-link" href="asd654198ZXoi.php">
                             <i class="nc-icon nc-circle-09"></i>
@@ -97,17 +103,17 @@
                             include("../../connect/connect.php");
 
                             $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
-                            $sql =  "SELECT Admin_ID,Admin_Fname FROM superadmin WHERE Admin_ID = '$AdminID'";
+                            $sql =  "SELECT User_ID,user_Fname FROM admin WHERE User_ID = '$AdminID'";
                             $result = mysqli_query($conn, $sql);
 
                             if (mysqli_num_rows($result) > 0) {
-                            while($row = mysqli_fetch_assoc($result)) {
-                                    echo '<a class="navbar-brand" href="#'.$row["Admin_Fname"].'">'.$row["Admin_Fname"]. '</a>';
-                              }
-                              }else{
-                                        session_destroy();
-                                        header("location:../../login.php");
-                                    } 
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo '<a class="navbar-brand" href="#'.$row["user_Fname"].'">'.$row["user_Fname"]. '</a>';
+                                }
+                            } else {
+                                session_destroy();
+                                header("location:../../adminlogin.php");
+                            } 
                         ?>
                     <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>
@@ -190,14 +196,14 @@
                                     $New2 =  mysqli_real_escape_string($conn,$_POST["pass2"]);
                                     $Password = md5($New1);
 
-                                    $select_post = "SELECT * FROM superadmin WHERE Admin_ID = '$AdminID'";
+                                    $select_post = "SELECT * FROM admin WHERE User_ID = '$AdminID'";
                                     $run_posts = $conn->query($select_post);
                                     if ($run_posts->num_rows > 0) {
                                         while($row = $run_posts->fetch_assoc()){
-                                            $post_Pass = $row['Admin_pass'];
+                                            $post_Pass = $row['User_Pass'];
                                             if ($post_Pass===$Old){
                                                 If($New1===$New2){
-                                                    $sql = "UPDATE admin SET Admin_pass = '$Password' WHERE Admin_ID = '$AdminID'";
+                                                    $sql = "UPDATE admin SET User_Pass = '$Password' WHERE User_ID = '$AdminID'";
                                                     if($conn->query($sql) === TRUE){
                                                             echo"<script>alert('SUCCESFULLY CHANGED PASSWORD')</script>";
                                                             echo "<script>window.open('settings.php','_SELF')</script>";

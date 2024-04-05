@@ -46,7 +46,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-color="blue" data-image="../../assets/img/#">
+        <div class="sidebar" data-color="purple" data-image="../../assets/img/#">
             <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -145,7 +145,7 @@
             <!-- End Navbar -->
             <div class="content"><!-- Start of Content -->
                 <div class="container-fluid">
-                    <div class="rowow w-rowow">
+                    <div class="rowow w-rowow d-flex justify-content-center align-items-center">
 
                         <?php
                             include("../../connect/connect.php");

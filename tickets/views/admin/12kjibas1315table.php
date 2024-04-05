@@ -43,7 +43,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-color="blue" data-image="../../assets/img/#">
+        <div class="sidebar" data-color="purple" data-image="../../assets/img/#">
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="#" class="simple-text">

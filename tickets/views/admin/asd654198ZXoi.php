@@ -1,7 +1,7 @@
 <?php
   if(!isset($_SESSION)) { session_start(); }
   if(!$_SESSION['AdminId']){
-  header("Location: ..\..\login.php");
+  header("Location: ..\..\adminlogin.php");
   }
 ?>
 
@@ -43,7 +43,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-color="blue" data-image="../../assets/img/#">
+        <div class="sidebar" data-color="purple" data-image="../../assets/img/#">
             <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -74,6 +74,12 @@
                             <p>Ticket Archives</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ticketcreationforuser.php">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Create Ticket - User</p>
+                        </a>
+                    </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="#">
                             <i class="nc-icon nc-circle-09"></i>
@@ -98,17 +104,17 @@
                             include("../../connect/connect.php");
 
                             $AdminID = mysqli_real_escape_string($conn,$_SESSION['AdminId']);
-                            $sql =  "SELECT Admin_ID,Admin_Fname FROM superadmin WHERE Admin_ID = '$AdminID'";
+                            $sql =  "SELECT User_ID,user_Fname FROM admin WHERE User_ID = '$AdminID'";
                             $result = mysqli_query($conn, $sql);
 
                             if (mysqli_num_rows($result) > 0) {
-                            while($row = mysqli_fetch_assoc($result)) {
-                                    echo '<a class="navbar-brand" href="#'.$row["Admin_Fname"].'">'.$row["Admin_Fname"]. '</a>';
-                              }
-                              }else{
-                                        session_destroy();
-                                        header("location:../../login.php");
-                                    } 
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo '<a class="navbar-brand" href="#'.$row["user_Fname"].'">'.$row["user_Fname"]. '</a>';
+                                }
+                            } else {
+                                session_destroy();
+                                header("location:../../adminlogin.php");
+                            } 
                         ?>
                     <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>
@@ -142,7 +148,7 @@
                                                 <div class="form-group">
                                                     <label>User Type</label>
                                                     <Select type="text" class="form-control"  name="Utype" required readonly>
-                                                            <option value="Admin">ADMIN</option>
+                                                            <option value="USER">USER</option>
                                                            
                                                     </Select>
                                                 </div>
@@ -183,17 +189,7 @@
                                                     </Select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 px-2">
-                                                <div class="form-group">
-                                                    <label>Specialty</label><br>
-                                                    <input type="checkbox" id="hardware" name="Specialty[]" value="h">
-                                                    <label for="hardware">Hardware</label><br>
-                                                    <input type="checkbox" id="software" name="Specialty[]" value="s">
-                                                    <label for="software">Software</label><br>
-                                                    <input type="checkbox" id="network" name="Specialty[]" value="n">
-                                                    <label for="network">Network</label><br>
-                                                </div>
-                                            </div>
+                                            
                                             <div class="col-md-3 pr-2">
                                                 <div class="form-group">
                                                     <label>Department</label>
@@ -235,10 +231,7 @@
                                         $FirstName = mysqli_real_escape_string($conn,$_POST["FName"]);
                                         $Lastname =  mysqli_real_escape_string($conn,$_POST["Lname"]);
                                         $Nickname = mysqli_real_escape_string($conn,$_POST["Nick"]);
-                                        $Tier = mysqli_real_escape_string($conn,$_POST["Tier"]);
-                                        if (isset($_POST['Specialty'])) {
-                                            $Specialty = implode('', $_POST['Specialty']);
-                                          } else {$Specialty = "none";}                                    
+                                        $Tier = mysqli_real_escape_string($conn,$_POST["Tier"]);                              
                                         $Password =  mysqli_real_escape_string($conn,$_POST["pass"]);
                                         $Password = md5($Password);
                                         $Mobile = mysqli_real_escape_string($conn,$_POST["Mnumber"]);
@@ -305,9 +298,9 @@
                                                     die();
                                             }
                                             else{
-                                                    $sql = "INSERT INTO admin (User_ID, user_Fname,User_Lname,User_MobileNum, User_Dept, User_JobDesc, User_Pass, User_Nickname, User_type, Tier, Specialty) VALUES ('$EID','$FirstName','$Lastname','$Mobile','$Department','$Jobdesc','$Password','$Nickname','$Usertype', '$Tier', '$Specialty')";
+                                                    $sql = "INSERT INTO user (User_ID, user_Fname,User_Lname,User_MobileNum, User_Dept, User_JobDesc, User_Pass, User_Nickname, User_type, Tier) VALUES ('$EID','$FirstName','$Lastname','$Mobile','$Department','$Jobdesc','$Password','$Nickname','$Usertype', '$Tier')";
                                                     $conn->query($sql);
-                                                    echo "<script>alert('New admin account created successfully!')</script>";
+                                                    echo "<script>alert('New user account created successfully!')</script>";
                                             }
 
 

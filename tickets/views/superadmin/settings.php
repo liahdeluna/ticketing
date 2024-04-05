@@ -42,7 +42,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-color="blue" data-image="../../assets/img/#">
+        <div class="sidebar" data-color="red" data-image="../../assets/img/#">
             <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -191,7 +191,7 @@
                                             $post_Pass = $row['Admin_pass'];
                                             if ($post_Pass===$Old){
                                                 If($New1===$New2){
-                                                    $sql = "UPDATE admin SET Admin_pass = '$Password' WHERE Admin_ID = '$AdminID'";
+                                                    $sql = "UPDATE superadmin SET Admin_pass = '$Password' WHERE Admin_ID = '$AdminID'";
                                                     if($conn->query($sql) === TRUE){
                                                             echo"<script>alert('SUCCESFULLY CHANGED PASSWORD')</script>";
                                                             echo "<script>window.open('settings.php','_SELF')</script>";
