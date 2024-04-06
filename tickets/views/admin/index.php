@@ -193,7 +193,8 @@ if (!$_SESSION['AdminId']) {
                                                 <th>Concern Type</th>
                                                 <th>Remarks</th>
                                                 <th>Date Created</th>
-                                                <th>Ticket Submitted by</th>
+                                                <th>Ticket Created by</th>
+                                                <th>Ticket Attended by</th>
                                                 <th>Access Ticket</th>
                                             </thead>
                                             <tbody>
@@ -250,6 +251,7 @@ if (!$_SESSION['AdminId']) {
                                                                 echo "<td>" . $row['Ticket_Remarks'] . "</td>";
                                                                 echo "<td>" . $row['Ticket_DateStart'] . "</td>";
                                                                 echo'<td>'.$row["user_Fname"].' '.$row["user_Lname"].'</td>';
+                                                                echo'<td>'.$row["admin_Fname"].' '.$row["admin_Lname"].'</td>';
                                                                 echo '<td><a href="archivescomments.php?TicketNumber=' . $row['Ticket_Number'] . '" class="fa fa-check buttonx"></a></td>';
                                                                 echo "</tr>";
                                                             }
