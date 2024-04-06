@@ -226,7 +226,7 @@ if (!$_SESSION['AdminId']) {
                                                                         FROM tickets 
                                                                         JOIN admin ON tickets.Ticket_Assigned = admin.User_ID 
                                                                         JOIN user ON tickets.User_Id = user.User_ID
-                                                                        WHERE Ticket_Status = 'Done' AND admin.User_ID = '$AdminID'
+                                                                        WHERE Ticket_Status = 'Done'
                                                                         AND (DateCreated BETWEEN '$fdate' AND '$tdate')";
 
                                                         // Add conditions to filter by name and concern type if they are provided
