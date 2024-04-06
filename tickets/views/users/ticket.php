@@ -137,77 +137,57 @@ include("../../connect/connect.php");
                                 <div class="card-body">
                                     <form method="post" class="form" action="ticket.php">
                                         <div class="row">
-                                            <div class="col-md-5 pr-3">
+                                            <div class="col-md-4 pr-2">
+                                                <div class="form-group">
+                                                    <label>Requestor</label>
+                                                    
+                                                        <?php
+                                                            include("../../connect/connect.php");
+                                                            $sql = "SELECT * FROM user WHERE User_ID = '$UserIDs'";
+                                                            $result = mysqli_query($conn, $sql);
+
+                                                            while ($row = mysqli_fetch_array($result)) {
+                                                                echo '<input readonly type="text" class="form-control" value="'
+                                                                .$row['User_ID'].'" data-tier= "'.$row['Tier']. '" name="Requestor" id="Requestor" required>';
+                                                            }                                                            
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>    
+                                        <div class="row">
+                                            <div class="col-md-5 pr-2">
                                                 <div class="form-group">
                                                     <label>Ticket Subject</label>
-                                                    <Select type="text" class="form-control"  name="TSubj" onchange=setType(this) required>
-                                                            <option value="Printer Problem">Printer Problem</option>
-                                                            <option value="No WiFi Connection">No WiFi Connection</option>
-                                                            <option value="Internet Installation">Internet Installation</option>
-                                                            <option value="Internet Connection Problem">Internet Connection Problem</option>
-                                                            <option value="Update Drivers">Update Drivers</option>
-                                                            <option value="Mouse Not Working">Mouse Not Working</option>
-                                                            <option value="Keyboard Not Working">Keyboard Not Working</option>
-                                                            <option value="Monitor Not Working">Monitor Not Working</option>
-                                                            <option value="PC Relocation">PC Relocation</option>
-                                                            <option value="Power Source Problem">Power Source Problem</option>
-                                                            <option value="Others">Others</option>
-                                                    </Select>
+                                                    <select type="text" class="form-control" name="TSubj" id="TSubj" required onchange="updateConcernType(); updatePriority();">
+                                                        <?php
+                                                            include("../../connect/connect.php");
+                                                            $sql = "SELECT * FROM problems ORDER BY problem_id ASC";
+                                                            $result = mysqli_query($conn, $sql);
+
+                                                            while ($row = mysqli_fetch_array($result)) {
+                                                                echo '<option value="'.$row['problem'].'" data-high-priority="'.$row['is_high_priority'].'">'.$row['problem'].'</option>';
+                                                            }                                                            
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 pr-1">
+                                            <div class="col-md-3 pr-2">
                                                 <div class="form-group">
-                                                    <label>Concern Type</label>
-                                                    <input readonly type="text" class="form-control" value="Hardware Concern" name="Concern" id="tConcern" required>
+                                                <label>Concern Type</label>
+                                                <input readonly type="text" class="form-control" value="Hardware Concern" name="Concern" id="tConcern" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 pr-1">
+                                            <div class="col-md-3 pr-2">
                                                 <div class="form-group">
-                                                    <label>Ticket Priority</label>
-                                                    <input readonly type="text" class="form-control" value="Medium Priority" name="Tprio" id="tPrio" required>
+                                                <label>Ticket Priority</label>
+                                                <input readonly type="text" class="form-control" value="High Priority" name="Tprio" id="tPrio" required>
                                                 </div>
                                             </div>
-                                            <script>
-                                                function setType(selectObject) {
-                                                    var selectedSubj = selectObject.selectedIndex;
-                                                    if (selectedSubj == 0) {document.getElementById("tConcern").setAttribute('value','Hardware Concern'); 
-                                                        document.getElementById("tPrio").setAttribute('value','Medium Priority');
-                                                    }
-                                                    if (selectedSubj == 1) {document.getElementById("tConcern").setAttribute('value','Network Concern'); 
-                                                        document.getElementById("tPrio").setAttribute('value','Medium Priority');
-                                                    }
-                                                    if (selectedSubj == 2) {document.getElementById("tConcern").setAttribute('value','Network Concern'); 
-                                                        document.getElementById("tPrio").setAttribute('value','High Priority');
-                                                    }
-                                                    if (selectedSubj == 3) {document.getElementById("tConcern").setAttribute('value','Network Concern'); 
-                                                        document.getElementById("tPrio").setAttribute('value','Medium Priority');
-                                                    }
-                                                    if (selectedSubj == 4) {document.getElementById("tConcern").setAttribute('value','Software Concern'); 
-                                                        document.getElementById("tPrio").setAttribute('value','Medium Priority');
-                                                    }
-                                                    if (selectedSubj == 5) {document.getElementById("tConcern").setAttribute('value','Hardware Concern'); 
-                                                        document.getElementById("tPrio").setAttribute('value','Low Priority');
-                                                    }
-                                                    if (selectedSubj == 6) {document.getElementById("tConcern").setAttribute('value','Hardware Concern'); 
-                                                        document.getElementById("tPrio").setAttribute('value','Low Priority');
-                                                    }
-                                                    if (selectedSubj == 7) {document.getElementById("tConcern").setAttribute('value','Hardware Concern'); 
-                                                        document.getElementById("tPrio").setAttribute('value','Medium Priority');
-                                                    }
-                                                    if (selectedSubj == 8) {document.getElementById("tConcern").setAttribute('value','Others'); 
-                                                        document.getElementById("tPrio").setAttribute('value','High Priority');
-                                                    }
-                                                    if (selectedSubj == 9) {document.getElementById("tConcern").setAttribute('value','Hardware Concern'); 
-                                                        document.getElementById("tPrio").setAttribute('value','Medium Priority');
-                                                    }
-                                                    if (selectedSubj == 10) {document.getElementById("tConcern").setAttribute('value','Others'); 
-                                                        document.getElementById("tPrio").setAttribute('value','Low Priority');
-                                                    }
-                                                }
-                                            </script>
                                         </div>
+        
                                         <div class="row">
-                                            <div class="col-md-11">
+                                            <div class="col-md-11 pr-2">
                                                 <div class="form-group">
                                                     <label>Remarks</label>
                                                     <textarea rows="4" cols="80" class="form-control" placeholder="Place your remarks here" name="Remarks" required></textarea>
@@ -215,10 +195,31 @@ include("../../connect/connect.php");
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-3 pr-2">
+                                            <div class="col-md-4 pr-2">
                                                 <div class="form-group">
-                                                    <label>Requestor</label>
-                                                    <?php echo '<input type="text" class="form-control" disabled placeholder="Employee: '.$UserIDs.' - '.$post_UserName.'" name="UName" required>'?>
+                                                    <label>Assigned to</label>
+                                                    <select type="text" class="form-control" name="Admin" id="AssignedAdmin" required>
+
+                                                        <script>
+                                                            const optionElement = document.createElement("option");
+                                                            var getUserID = document.getElementById("Requestor").value;
+                                                            var dropdownAdmin = document.getElementById("AssignedAdmin");
+                                                            dropdownAdmin.innerHTML = "";
+
+                                                            if(getUserID.charAt(3)== "0") {
+                                                                optionElement.textContent = "EMP001 - Marvin Reyes";
+                                                                optionElement.value = "EMP001";
+                                                            } else  if(getUserID.charAt(3)== "1") {
+                                                                optionElement.textContent = "EMP102 - Louie De Jesus";
+                                                                optionElement.value = "EMP102";
+                                                            } else  if(getUserID.charAt(3)== "2") {
+                                                                optionElement.textContent = "EMP203 - Gem Cepriono";
+                                                                optionElement.value = "EMP203";
+                                                            }
+                                                            dropdownAdmin.appendChild(optionElement);
+                                                        </script>
+
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -260,30 +261,161 @@ include("../../connect/connect.php");
 <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
 
+<script>
+    function updateConcernType() {
+        <?php 
+            include("../../connect/connect.php");
+            $sql = "SELECT problem, problem_category FROM problems";
+            $result = $conn->query($sql);
+            $data = array();
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+            }
+        ?>
+        var problemData = <?php echo json_encode($data); ?>;
 
+        var selectedSubject = document.getElementById("TSubj").value;
+        var concernType = "";
+        
+        for (var i = 0; i < problemData.length; i++) {
+            if (problemData[i].problem === selectedSubject) {
+                concernType = problemData[i].problem_category;
+            }
+        }
+
+        document.getElementById("tConcern").value = concernType;
+    }
+    
+    function updatePriority() {
+        var selectedRequestor = document.getElementById("Requestor");
+        var selectedTier = selectedRequestor.getAttribute('data-tier');
+        var selectedProblem = document.getElementById("TSubj");
+        var isHighPriority = selectedProblem.options[selectedProblem.selectedIndex].getAttribute('data-high-priority');
+        var priorityLevel = '';
+        if (isHighPriority == '1') {
+            priorityLevel = 'High Priority'; 
+        } else {
+            switch (selectedTier) {
+                case '0':
+                    priorityLevel = 'High Priority';
+                    break;
+                case '1':
+                    priorityLevel = 'Medium Priority';
+                    break;
+                case '2':
+                    priorityLevel = 'Low Priority';
+                    break;
+                default:
+                    priorityLevel = 'Unknown Priority';
+                    break;
+            }
+        }
+        
+        document.getElementById("tPrio").value = priorityLevel;
+
+        var requestorID = document.getElementById("Requestor").value;
+        var concernType = document.getElementById("tConcern").value;
+
+        if (concernType == "Hardware Concern") {
+            concernType = "h";
+        } else if (concernType == "Software Concern") {
+            concernType = "s";
+        } else {
+            concernType = "n";
+        }
+       
+        <?php 
+            include("../../connect/connect.php");
+            $sql = "SELECT * FROM admin";
+            $result = $conn->query($sql);
+            $data = array();
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+            }
+        ?>
+        var adminData = <?php echo json_encode($data); ?>;
+
+        <?php 
+            include("../../connect/connect.php");
+            $sql = "SELECT User_ID, Tier FROM user";
+            $result = $conn->query($sql);
+            $data = array();
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+            }
+        ?>
+        var userData = <?php echo json_encode($data); ?>;
+
+        var requestorTier = 0;
+
+        for (var i = 0; i < userData.length; i++) {
+            if (userData[i].User_ID === requestorID) {
+                requestorTier = userData[i].Tier;
+            }
+        }
+
+        var adminChoices = [];
+
+        for (var i = 0; i < adminData.length; i++) {
+            if (adminData[i].Tier === requestorTier) {
+                if ((adminData[i].Specialty).includes(concernType)) {
+                    adminChoices.push([adminData[i].User_ID, adminData[i].user_Fname, adminData[i].User_Lname]);
+                }
+            }
+        }
+        var dropdownAdmin = document.getElementById("AssignedAdmin");
+        dropdownAdmin.innerHTML = "";
+
+        adminChoices.forEach(option => {
+        const optionElement = document.createElement("option");
+        optionElement.textContent = option[0] + " - " + option[1] + " " + option[2]; // Set the display text
+        optionElement.value = option[0]; // Set the option value
+        dropdownAdmin.appendChild(optionElement);
+      });
+    
+    
+    }
+    
+</script>
 </html>
 
 
 <?php
         include("../../connect/connect.php");
-        if(isset($_POST['submit'])){
-                $Subj =  mysqli_real_escape_string($conn,$_POST["TSubj"]);
-                $TConcern = mysqli_real_escape_string($conn,$_POST["Concern"]);
-                $Priority =  mysqli_real_escape_string($conn,$_POST["Tprio"]);
-                $Remarks = mysqli_real_escape_string($conn,$_POST["Remarks"]);
-                $Ticket_Stats = "Pending";
-
-                  $sql = "INSERT INTO tickets (Ticket_Number, Ticket_Subj, Ticket_type, Ticket_Remarks, Ticket_Priority, Ticket_Status, User_Id) VALUES (NULL,'$Subj','$TConcern','$Remarks','$Priority', '$Ticket_Stats', '$UserIDs')";
-                if($conn->query($sql) === TRUE){
-                                echo "<script>alert('SUCCESSFULLY SUBMITED TICKET')</script>";
-                                echo "<script>window.open('ticket.php','_self')</script>";
-                            }
-                            else
-                            {
-                                echo "<script>alert('ERROR')</script>";
-                            }
-
-                            $conn->close();
-                  }
+        if (isset($_POST['submit'])) {
+            $Subj =  mysqli_real_escape_string($conn,$_POST["TSubj"]);
+            $TConcern = mysqli_real_escape_string($conn,$_POST["Concern"]);
+            $Priority = mysqli_real_escape_string($conn,$_POST["Tprio"]);
+            $Remarks = mysqli_real_escape_string($conn,$_POST["Remarks"]);
+            $Requestor_ID = mysqli_real_escape_string($conn,$_POST["Requestor"]);
+            $Admin_ID = mysqli_real_escape_string($conn,$_POST["Admin"]);
+            $Requestor_Tier = 0;
+        
+            $sql =  "SELECT Tier FROM user WHERE User_ID = '$Requestor_ID'";
+            $result = mysqli_query($conn, $sql);
+        
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $Requestor_Tier = $row["Tier"];
+                }
+            }
+        
+        
+            $sql = "INSERT INTO `tickets` (`Ticket_Number`, `Ticket_Subj`, `Ticket_type`, `Ticket_Remarks`, `Ticket_Priority`, `Ticket_Status`, `Ticket_DateStart`, `Ticket_DateEnd`, `User_Id`, `DateCreated`, `Ticket_Tier`, `Ticket_Assigned`) VALUES (NULL, '$Subj', '$TConcern', '$Remarks', '$Priority', 'Pending', current_timestamp(), NULL, '$Requestor_ID', current_timestamp(), '$Requestor_Tier', '$Admin_ID');";
+            if ($conn->query($sql) === TRUE) {
+                echo "<script>alert('SUCCESSFULLY SUBMITED TICKET')</script>";
+                echo "<script>window.open('ticket.php','_self')</script>";
+            } else {
+                echo "<script>alert('ERROR')</script>";
+            }
+        
+            $conn->close();
+        }
         
 ?> 
