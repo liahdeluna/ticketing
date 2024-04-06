@@ -213,7 +213,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="col-md-12 pr-1">
-                                        <h4>Comments:</h4>
+                                        <h4>Solution:</h4>
                                 
                                 <?php
                                     include("../../connect/connect.php");

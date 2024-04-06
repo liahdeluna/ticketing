@@ -202,7 +202,7 @@
                                         <div class="row">
                                             <div class="col-md-12 pr-4">
                                                 <div class="form-group">
-                                                    <label><h4>Comments:</h4></label>
+                                                    <label><h4>Solution:</h4></label>
                                                                 <?php
                                                                     include("../../connect/connect.php");
                                                                     $sql = "SELECT * FROM tickets JOIN ticket_comments ON tickets.Ticket_Number = ticket_comments.TicksNums WHERE ticket_comments.TicksNums = '$TicketNum' ORDER BY ticket_comments.Cstamp ASC";
@@ -225,7 +225,7 @@
                                                                                 echo "<div class='row'>";
                                                                                     echo "<div class='col-md-12 pr-1'>";
                                                                                         echo "<div class='form-group'>";
-                                                                                            echo  "<h4>No Comments</h4>";   
+                                                                                            echo  "<h4>No Solution Yet</h4>";   
                                                                             }
                                                                 ?>
                                                 </div>

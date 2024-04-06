@@ -1,8 +1,19 @@
 <?php
-  if(!isset($_SESSION)) { session_start(); }
-  if(!$_SESSION['AdminId']){
-  header("Location: ..\..\login.php");
-  }
+// Start session
+if (!isset($_SESSION)) { 
+    session_start(); 
+}
+
+// Redirect if AdminId is not set
+if (!isset($_SESSION['AdminId']) || empty($_SESSION['AdminId'])) {
+    header("Location: ../../login.php");
+    exit(); // Terminate script execution after redirection
+}
+
+// Include database connection
+include("../../connect/connect.php");
+
+// Proceed with the rest of your code...
 ?>
 
 
@@ -167,18 +178,17 @@
                                         </div>
                                         <div class="row">
                                            <!-- HTML code for the dropdown menu -->
-<div class="col-md-6">
-    <div class="form-group">
-        <label>Concern Type</label>
-        <select id="Concern" class="form-control" name="Concern" required>
-            <option value="All">All</option>
-            <option value="Software Concern">Software Concern</option>
-            <option value="Hardware Concern">Hardware Concern</option>
-            <option value="Network Concern">Network Concern</option>
-            <option value="Others">Others</option>
-        </select>
-    </div>
-</div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Concern Type</label>
+                                                    <select id="Concern" class="form-control" name="Concern" required>
+                                                        <option value="All">All</option>
+                                                        <option value="Software Concern">Software Concern</option>
+                                                        <option value="Hardware Concern">Hardware Concern</option>
+                                                        <option value="Network Concern">Network Concern</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Name Of User</label>
@@ -212,68 +222,76 @@
                                             </thead>
                                             <tbody>
                                                 <?php
-include("../../connect/connect.php");
+                                                    include("../../connect/connect.php");
 
-if (isset($_POST['submit'])) {
-    $date1 = $_POST['date1'];
-    $fdate = strtotime($date1);
-    $fdate = date("Y/m/d", $fdate);
+                                                    if (isset($_POST['submit'])) {
+                                                        $date1 = $_POST['date1'];
+                                                        $fdate = strtotime($date1);
+                                                        $fdate = date("Y/m/d", $fdate);
 
-    $date2 = $_POST['date2'];
-    $tdate = strtotime($date2);
-    $tdate = date("Y/m/d", $tdate);
+                                                        $date2 = $_POST['date2'];
+                                                        $tdate = strtotime($date2);
+                                                        $tdate = date("Y/m/d", $tdate);
 
-    $concern = $_POST['Concern'];
-    $name = $_POST['name'];
+                                                        $concern = $_POST['Concern'];
+                                                        $name = $_POST['name'];
 
-    // Construct the base SQL query
-    $select_post = "SELECT * FROM admin 
-                    JOIN admin_to_tickets ON admin.Admin_ID = admin_to_tickets.Admin_Id 
-                    JOIN tickets ON admin_to_tickets.Ticket_Num = tickets.Ticket_Number 
-                    JOIN user ON tickets.User_Id = user.User_ID 
-                    WHERE Ticket_Status = 'Done' 
-                    AND (DateCreated BETWEEN '$fdate' AND '$tdate')";
+                                                        // Construct the base SQL query 
+                                                        $select_post = "SELECT tickets.Ticket_Number, 
+                                                                        tickets.Ticket_Subj, 
+                                                                        tickets.Ticket_type, 
+                                                                        tickets.Ticket_Remarks, 
+                                                                        tickets.Ticket_Priority, 
+                                                                        tickets.Ticket_DateStart, 
+                                                                        user.user_Fname AS user_Fname, 
+                                                                        user.User_Lname AS user_Lname, 
+                                                                        admin.user_Fname AS admin_Fname, 
+                                                                        admin.User_Lname AS admin_Lname 
+                                                                        FROM tickets 
+                                                                        JOIN admin ON tickets.Ticket_Assigned = admin.User_ID 
+                                                                        JOIN user ON tickets.User_Id = user.User_ID
+                                                                        WHERE Ticket_Status = 'Done'
+                                                                        AND (DateCreated BETWEEN '$fdate' AND '$tdate')";
 
-    // Add conditions to filter by name and concern type if they are provided
-    if (!empty($name)) {
-        $select_post .= " AND user_Fname = '$name'";
-    }
+                                                        // Add conditions to filter by name and concern type if they are provided
+                                                        if (!empty($name)) {
+                                                            $select_post .= " AND user.user_Fname = '$name'";
+                                                        }
 
-    if ($concern != 'All') {
-        $select_post .= " AND Ticket_type = '$concern'";
-    }
+                                                        if ($concern != 'All') {
+                                                            $select_post .= " AND tickets.Ticket_type,  = '$concern'";
+                                                        }
 
-    // Execute the SQL query
-    $run_posts = $conn->query($select_post);
+                                                        // Execute the SQL query
+                                                        $run_posts = $conn->query($select_post);
 
-    if ($run_posts->num_rows > 0) {
-        include('count.php');
-        while ($row = $run_posts->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row['Ticket_Number'] . "</td>"; // Display ticket number from the database
-            echo "<td>" . $row['Ticket_Subj'] . "</td>";
-            echo "<td>" . $row['Ticket_type'] . "</td>";
-            echo "<td>" . $row['Ticket_Remarks'] . "</td>";
-            echo "<td>" . $row['Ticket_DateStart'] . "</td>";
-            echo "<td>" . $row['user_Fname'] . " " . $row['User_Lname'] . "</td>";
-            echo "<td>" . $row['Admin_Fname'] . " " . $row['Admin_Lname'] . "</td>";
-            echo '<td><a href="archivescomments.php?TicketNumber=' . $row['Ticket_Number'] . '" class="fa fa-check buttonx"></a></td>';
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr>
-        <td>No Records found</td>
-        <td>No Records found</td>
-        <td>No Records found</td>
-        <td>No Records found</td>
-        <td>No Records found</td>
-        <td>No Records found</td>
-        <td>No Records found</td>
-        <td>No Records found</td>
-        </tr>";
-    }
-}
-?>
+                                                        if ($run_posts->num_rows > 0) {
+                                                            while ($row = $run_posts->fetch_assoc()) {
+                                                                echo "<tr class='ticket-row' data-type='{$row['Ticket_type']}'>";
+                                                                echo "<td>" . $row['Ticket_Number'] . "</td>"; // Display ticket number from the database
+                                                                echo "<td>" . $row['Ticket_Subj'] . "</td>";
+                                                                echo "<td>" . $row['Ticket_type'] . "</td>";
+                                                                echo "<td>" . $row['Ticket_Remarks'] . "</td>";
+                                                                echo "<td>" . $row['Ticket_DateStart'] . "</td>";
+                                                                echo'<td>'.$row["user_Fname"].' '.$row["user_Lname"].'</td>';
+                                                                echo'<td>'.$row["admin_Fname"].' '.$row["admin_Lname"].'</td>';
+                                                                echo '<td><a href="archivescomments.php?TicketNumber=' . $row['Ticket_Number'] . '" class="fa fa-check buttonx"></a></td>';
+                                                                echo "</tr>";
+                                                            }
+                                                        } else {
+                                                            echo "<tr>
+                                                            <td>No Records found</td>
+                                                            <td>No Records found</td>
+                                                            <td>No Records found</td>
+                                                            <td>No Records found</td>
+                                                            <td>No Records found</td>
+                                                            <td>No Records found</td>
+                                                            <td>No Records found</td>
+                                                            <td>No Records found</td>
+                                                            </tr>";
+                                                        }
+                                                    }
+                                                    ?>
                                             </tbody>
                                         </table>
                                     </div>
