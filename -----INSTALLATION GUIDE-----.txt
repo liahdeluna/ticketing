@@ -1,0 +1,54 @@
+-----INSTALLATION GUIDE-----
+
+-----Step 1: Download and Install XAMPP
+Download XAMPP:
+
+Go to the official XAMPP website.
+Download the appropriate version of XAMPP for your operating system (Windows, macOS, or Linux).
+Install XAMPP:
+
+Run the installer and follow the on-screen instructions.
+Choose the default options during the installation process.
+Ensure that Apache and MySQL are selected for installation.
+Start XAMPP:
+
+Open the XAMPP Control Panel.
+Start the Apache and MySQL services by clicking the "Start" buttons next to each.
+
+-----Step 2: Set Up Your Custom Ticketing System
+Download the Ticketing System:
+
+Go to the repository on GitHub where your ticketing-main.zip file is located.
+Download the ticketing-main.zip file to your computer.
+Extract the Ticketing System:
+
+Extract the contents of the ticketing-main.zip file.
+Move the extracted folder to the htdocs directory in your XAMPP installation folder. The typical path is:
+On Windows: C:\xampp\htdocs\
+On macOS: /Applications/XAMPP/htdocs/
+Rename the Folder (Optional):
+
+Rename the extracted folder to a simpler name if desired, such as ticketing.
+
+-----Step 3: Launch the Ticketing System
+Open Your Browser:
+
+Open any web browser (e.g., Chrome, Firefox, Edge).
+Access the Ticketing System:
+
+In the address bar, type http://localhost/ticketing (or replace ticketing with the name of your folder if you renamed it).
+Press Enter.
+Verify the Installation:
+
+The ticketing system should now be running, and you should see the interface of your ticketing application.
+Additional Tips
+Ensure that the index.php file (or equivalent main file) is present in the root of your ticketing system folder.
+If you encounter any errors, check the XAMPP Control Panel for any issues with the Apache server.
+Make sure no other applications are using port 80, which is the default port for Apache.
+With these steps, your custom ticketing system should be up and running on your local machine using XAMPP. If there are any specific configuration files or settings needed for your ticketing system, make sure they are properly set up in the ticketing-main folder.
+
+
+
+
+
+
